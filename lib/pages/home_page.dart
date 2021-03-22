@@ -1,14 +1,23 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'file:///D:/flutter_workspace/is_takip_uyg/lib/constants/constant.dart';
 import 'package:is_takip_uyg/pages/login_page.dart';
+import 'file:///D:/flutter_workspace/is_takip_uyg/lib/constants/constant.dart';
+import 'package:is_takip_uyg/services/auth_service.dart';
+import 'package:is_takip_uyg/services/database_service.dart';
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
+
 class _HomePageState extends State<HomePage> {
-bool isActive =true;
-IconData icon=Icons.play_arrow;
+  bool isActive = true;
+  IconData icon = Icons.play_arrow;
+  AuthService auth = new AuthService();
+  DatabaseService databaseService = new DatabaseService();
+  String soyad = "";
+  String ad = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,10 +73,11 @@ IconData icon=Icons.play_arrow;
                         icon: Icon(Icons.exit_to_app),
                         iconSize: 30,
                         onPressed: () {
+                          auth.signOut();
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LoginPage(),
+                              builder: (BuildContext context) => LoginPage(),
                             ),
                           );
                         },
@@ -76,7 +86,9 @@ IconData icon=Icons.play_arrow;
                   ),
                 ),
               ),
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
               Container(
                 height: 50,
                 width: 150,
@@ -87,16 +99,55 @@ IconData icon=Icons.play_arrow;
                 child: FlatButton(
                   onPressed: () {
                     setState(() {
-                      if(isActive==false){
-                        icon=Icons.play_arrow;
-                      }else{
-                        icon=Icons.pause;
+                      if (isActive == false) {
+                        icon = Icons.play_arrow;
+                      } else {
+                        icon = Icons.pause;
                       }
-                      isActive=!isActive;
+                      isActive = !isActive;
                     });
                   },
-                  child: Icon(icon,size: 55,color: Colors.black,),
+                  child: Icon(
+                    icon,
+                    size: 55,
+                    color: Colors.black,
+                  ),
                 ),
+              ),
+              TextField(
+                onChanged: (text) {
+                  ad = text;
+                },
+                style: TextStyle(
+                  color: Colors.black87,
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(top: 14),
+                  hintText: "İsim",
+                  hintStyle: TextStyle(color: Colors.black38),
+                ),
+              ),
+              TextField(
+                onChanged: (text) {
+                  soyad = text;
+                },
+                style: TextStyle(
+                  color: Colors.black87,
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(top: 14),
+                  hintText: "Soyisim",
+                  hintStyle: TextStyle(color: Colors.black38),
+                ),
+              ),
+              FlatButton(
+                onPressed: () async {
+                  print("$ad" + "$soyad");
+                  databaseService.createUserData(ad, soyad);
+                },
+                child: Text("Buton"),
               ),
             ],
           ),

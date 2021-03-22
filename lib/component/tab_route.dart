@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'file:///D:/flutter_workspace/is_takip_uyg/lib/constants/constant.dart';
-import 'pages/home_page.dart';
-import 'pages/profile_page.dart';
-import 'pages/task_page.dart';
+import '../pages/home_page.dart';
+import '../pages/profile_page.dart';
+import '../pages/task_page.dart';
 
 class TabRoute extends StatefulWidget {
   @override
