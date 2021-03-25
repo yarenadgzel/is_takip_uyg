@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'file:///D:/flutter_workspace/is_takip_uyg/lib/constants/constant.dart';
 import 'package:is_takip_uyg/component/tab_route.dart';
+import 'package:is_takip_uyg/constant/constant.dart';
 import 'package:is_takip_uyg/services/auth_service.dart';
 
 

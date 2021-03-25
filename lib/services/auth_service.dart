@@ -17,6 +17,7 @@ class AuthService {
    return user;
   }
 
+
   // ---------------------- getter ---------------------- //
 
   Stream<LoggedInUser> get user {

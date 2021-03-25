@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:is_takip_uyg/constants/constant.dart';
-import 'file:///D:/flutter_workspace/is_takip_uyg/lib/component/task_card.dart';
+import 'package:is_takip_uyg/component/task_card.dart';
+import 'package:is_takip_uyg/constant/constant.dart';
 
 
 class TaskPage extends StatefulWidget {

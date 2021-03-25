@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:is_takip_uyg/component/get_data.dart';
+import 'package:is_takip_uyg/constant/constant.dart';
 import 'package:is_takip_uyg/pages/login_page.dart';
-import 'file:///D:/flutter_workspace/is_takip_uyg/lib/constants/constant.dart';
 import 'package:is_takip_uyg/services/auth_service.dart';
 import 'package:is_takip_uyg/services/database_service.dart';
 
@@ -145,10 +145,12 @@ class _HomePageState extends State<HomePage> {
               FlatButton(
                 onPressed: () async {
                   print("$ad" + "$soyad");
-                  databaseService.createUserData(ad, soyad);
+                  //databaseService.createUserData(ad, soyad);
+                  databaseService.createUniqueData(ad, soyad);
                 },
                 child: Text("Buton"),
               ),
+             Container(child: DataList()),
             ],
           ),
         ),

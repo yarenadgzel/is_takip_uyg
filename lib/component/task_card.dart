@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:is_takip_uyg/constants/constant.dart';
+import 'package:is_takip_uyg/constant/constant.dart';
+
 class taskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
