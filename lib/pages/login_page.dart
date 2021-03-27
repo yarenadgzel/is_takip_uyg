@@ -1,10 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:is_takip_uyg/component/tab_route.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
 import 'package:is_takip_uyg/services/auth_service.dart';
-
 
 
 class LoginPage extends StatefulWidget {
@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: SingleChildScrollView(
                     padding:
-                        EdgeInsets.symmetric(vertical: 120.0, horizontal: 25.0),
+                    EdgeInsets.symmetric(vertical: 120.0, horizontal: 25.0),
                     physics: AlwaysScrollableScrollPhysics(),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -216,15 +216,39 @@ class _LoginPageState extends State<LoginPage> {
 
     auth
         .signWithEmailAndPassword(email, password)
-        .then((value) => {
-              print("Başarılı oldu!"),
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TabRoute(),
-                ),
-              )
-            })
+        .then((value) =>
+    {
+      if(value == null){
+        showAlertDialog(context)
+      }
+      else
+        {
+          print("Giriş başarılı")
+        }
+    })
         .catchError((onError) => {print("hata")});
+  }
+  showAlertDialog(BuildContext context) {
+    Widget okButton = FlatButton(
+      child: Text("OK",style: kTextStyleAlertButton,),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      backgroundColor:Colors.white,
+      title: Text("Uyarı",style: kTextStyleAlertTitle,),
+      content: Text("Lütfen geçerli bir kullanıcı adı veya şifre giriniz",style: kTextStyleAlertContent,),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

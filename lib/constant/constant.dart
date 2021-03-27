@@ -11,5 +11,11 @@ const kTextStyleProfilePage = TextStyle(
   fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black,);
 const kTextStyleTaskPage=TextStyle(fontSize: 22,fontWeight: FontWeight.bold,color: Colors.black);
 const kExpansionTextStyle=TextStyle(fontSize: 17,fontWeight: FontWeight.w700,color: Colors.black);
+const kTextStyleAlertTitle = TextStyle(
+  fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black,);
+const kTextStyleAlertContent = TextStyle(
+  fontSize: 18, color: Colors.black,);
+const kTextStyleAlertButton = TextStyle(
+  fontSize: 20, color: Colors.blue,);
 
 const String usersPath = "users";

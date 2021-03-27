@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:is_takip_uyg/component/get_currentTime.dart';
 import 'package:is_takip_uyg/component/get_data.dart';
+import 'package:is_takip_uyg/component/get_location.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
 import 'package:is_takip_uyg/pages/login_page.dart';
 import 'package:is_takip_uyg/services/auth_service.dart';
@@ -15,8 +18,8 @@ class _HomePageState extends State<HomePage> {
   IconData icon = Icons.play_arrow;
   AuthService auth = new AuthService();
   DatabaseService databaseService = new DatabaseService();
-  String soyad = "";
-  String ad = "";
+  String lastName = "";
+  String name = "";
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +106,8 @@ class _HomePageState extends State<HomePage> {
                         icon = Icons.play_arrow;
                       } else {
                         icon = Icons.pause;
+                        getLocation();
+                        getCurrentTime();
                       }
                       isActive = !isActive;
                     });
@@ -116,7 +121,7 @@ class _HomePageState extends State<HomePage> {
               ),
               TextField(
                 onChanged: (text) {
-                  ad = text;
+                  name = text;
                 },
                 style: TextStyle(
                   color: Colors.black87,
@@ -130,7 +135,7 @@ class _HomePageState extends State<HomePage> {
               ),
               TextField(
                 onChanged: (text) {
-                  soyad = text;
+                  lastName = text;
                 },
                 style: TextStyle(
                   color: Colors.black87,
@@ -144,17 +149,26 @@ class _HomePageState extends State<HomePage> {
               ),
               FlatButton(
                 onPressed: () async {
-                  print("$ad" + "$soyad");
+                  print("$name" + "$lastName");
                   //databaseService.createUserData(ad, soyad);
-                  databaseService.createUniqueData(ad, soyad);
+                  databaseService.createUniqueData(name, lastName);
                 },
                 child: Text("Buton"),
               ),
-             Container(child: DataList()),
+              FlatButton(
+                onPressed: () async {
+                  databaseService.updateUsersData(name, lastName);
+                },
+                child: Text("Güncelle"),
+              ),
+
+             GetDataList(),
             ],
           ),
         ),
       ),
     );
   }
+
+
 }

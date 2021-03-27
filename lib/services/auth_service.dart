@@ -36,7 +36,9 @@ class AuthService {
       print(e.toString());
       return null;
     }
+
   }
+
 
   // ---------------------- registerWithEmailAndPassword ---------------------- //
 

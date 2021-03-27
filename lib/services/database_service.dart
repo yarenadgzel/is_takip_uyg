@@ -16,7 +16,7 @@ class DatabaseService {
     });
   }
 
-  createUniqueData(String name, String lastName) async {
+    createUniqueData(String name, String lastName) async {
     var uuid = Uuid(); //Uuid sınıfından bir nesne yarattık
 
     await myRef.document(uuid.v4()).setData({
@@ -25,7 +25,20 @@ class DatabaseService {
     });
   }
 
-  firebaseGetData() {
+  getUsersData() {
   Firestore.instance.collection("users").snapshots();
+  //myRef.document("ds").documentID
+
+  }
+
+  updateUsersData(String name,String lastName) async {
+    FirebaseUser user = await authService.getCurrentUser();
+    await myRef.document(user.uid).updateData({
+      'name': name,
+      'lastName': lastName,
+    });
+  }
+  deleteUserByID(String id) async {
+    await myRef.document(id).delete();
   }
 }
