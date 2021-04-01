@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:is_takip_uyg/services/auth_service.dart';
 import 'package:uuid/uuid.dart';
 
-class DatabaseService {
+class DatabaseServiceUsers {
   final CollectionReference myRef = Firestore.instance.collection("users");
   AuthService authService = new AuthService();
 
@@ -38,7 +38,8 @@ class DatabaseService {
       'lastName': lastName,
     });
   }
-  deleteUserByID(String id) async {
-    await myRef.document(id).delete();
+
+  deleteUserByID(String documentId) async {
+    await myRef.document(documentId).delete();
   }
 }

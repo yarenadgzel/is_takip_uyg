@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
-import '../pages/home_page.dart';
-import '../pages/profile_page.dart';
-import '../pages/task_page.dart';
+import 'package:is_takip_uyg/pages/task/admin_tasklist_page.dart';
+import '../pages/home/home_page.dart';
+import '../pages/profile/profile_page.dart';
+import '../pages/task/task_page.dart';
 
 class TabRoute extends StatefulWidget {
   @override
@@ -18,13 +19,14 @@ class _TabRouteState extends State<TabRoute> {
     super.initState();
     listScreens = [
       HomePage(),
-      TaskPage(),
+      AdminTaskListPage(),
       ProfilePage(),
     ];
   }
 
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: listScreens[tabIndex],
         bottomNavigationBar: BottomNavigationBar(

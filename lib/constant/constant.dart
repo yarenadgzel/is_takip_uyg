@@ -17,5 +17,12 @@ const kTextStyleAlertContent = TextStyle(
   fontSize: 18, color: Colors.black,);
 const kTextStyleAlertButton = TextStyle(
   fontSize: 20, color: Colors.blue,);
-
+const kTextStyleAdminTaskListTitle=TextStyle(
+    color: Colors.white,
+    fontSize: 21,
+    fontWeight: FontWeight.bold);
+const kTextStyleAdminTaskListSubtitle=TextStyle(
+    color: Colors.white,
+    fontSize: 16,
+    fontWeight: FontWeight.w500);
 const String usersPath = "users";

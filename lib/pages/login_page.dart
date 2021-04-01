@@ -1,11 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:is_takip_uyg/component/tab_route.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
 import 'package:is_takip_uyg/services/auth_service.dart';
-
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,8 +11,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String email;
-  String password;
+  bool isLoading = false;
+  String email="";
+  String password="";
 
   AuthService auth = new AuthService();
 
@@ -43,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: SingleChildScrollView(
                     padding:
-                    EdgeInsets.symmetric(vertical: 120.0, horizontal: 25.0),
+                        EdgeInsets.symmetric(vertical: 120.0, horizontal: 25.0),
                     physics: AlwaysScrollableScrollPhysics(),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -191,6 +190,9 @@ class _LoginPageState extends State<LoginPage> {
       child: RaisedButton(
         elevation: 5,
         onPressed: () {
+          setState(() {
+            isLoading = true;
+          });
           login();
         },
         padding: EdgeInsets.all(15),
@@ -198,7 +200,7 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(15),
         ),
         color: Colors.white,
-        child: Text(
+        child: isLoading ? CircularProgressIndicator() : Text(
           "LOGIN",
           style: TextStyle(
             color: Colors.black54,
@@ -211,35 +213,50 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> login() async {
-    print("email: " + email);
-    print("password: " + password);
+    if (this.email == "" || this.password == "") {
+      showAlertDialog(context,"Lütfen boş alan bırakmayınız!");
+      this.setState(() {
+        isLoading = false;
+      });
 
-    auth
-        .signWithEmailAndPassword(email, password)
-        .then((value) =>
-    {
-      if(value == null){
-        showAlertDialog(context)
-      }
-      else
-        {
-          print("Giriş başarılı")
-        }
-    })
-        .catchError((onError) => {print("hata")});
+    } else {
+      print("else");
+      auth
+          .signWithEmailAndPassword(email, password)
+          .then((value) => {
+                this.setState(() {
+                  isLoading = false;
+                }),
+                if (value == null)
+                  {showAlertDialog(context,"Lütfen geçerli bir kullanıcı adı veya şifre giriniz")}
+                else
+                  {print("Giriş başarılı")}
+              })
+          .catchError((onError) => {print("hata")});
+    }
   }
-  showAlertDialog(BuildContext context) {
+
+  showAlertDialog(BuildContext context,String content) {
     Widget okButton = FlatButton(
-      child: Text("OK",style: kTextStyleAlertButton,),
+      child: Text(
+        "OK",
+        style: kTextStyleAlertButton,
+      ),
       onPressed: () {
         Navigator.pop(context);
       },
     );
     AlertDialog alert = AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      backgroundColor:Colors.white,
-      title: Text("Uyarı",style: kTextStyleAlertTitle,),
-      content: Text("Lütfen geçerli bir kullanıcı adı veya şifre giriniz",style: kTextStyleAlertContent,),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      backgroundColor: Colors.white,
+      title: Text(
+        "Uyarı",
+        style: kTextStyleAlertTitle,
+      ),
+      content: Text(
+        content,
+        style: kTextStyleAlertContent,
+      ),
       actions: [
         okButton,
       ],

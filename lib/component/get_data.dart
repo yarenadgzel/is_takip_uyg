@@ -1,13 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:is_takip_uyg/services/database_service.dart';
+import 'package:is_takip_uyg/services/auth_service.dart';
+import 'package:is_takip_uyg/services/users/database_service_users.dart';
+
 
 class GetDataList extends StatelessWidget {
-  DatabaseService databaseService=new DatabaseService();
+  DatabaseServiceUsers databaseServiceUsers=new DatabaseServiceUsers();
+  AuthService authService=new AuthService();
+  DocumentSnapshot snapshot;
   @override
   Widget build(BuildContext context) {
     return new StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance.collection('users').snapshots(),
+        stream: databaseServiceUsers.getUsersData(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) return new Text("Loading");
           return Container(
@@ -23,19 +28,23 @@ class GetDataList extends StatelessWidget {
     return snapshot.data.documents
         .map(
           (doc) => new ListTile(
+            onTap:(){},
             title: new Text(doc["name"] + " " + doc["lastName"].toString()),
-            subtitle: Row(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    databaseService.deleteUserByID(doc.documentID);
-                  },
-                ),
-              ],
+            trailing: IconButton(
+              icon: Icon(Icons.delete, color: Colors.red,),
+              onPressed: () {
+                databaseServiceUsers.deleteUserByID(doc.documentID);
+              },
             ),
           ),
         )
         .toList();
+  }
+
+  Future<String> getUsername() async {
+    FirebaseUser user = await authService.getCurrentUser();
+    final data =  await Firestore.instance.collection("users").document(user.uid).get();
+    snapshot=data;
+    return snapshot.data['name'].toString() +" "+ snapshot.data['lastName'].toString();
   }
 }
