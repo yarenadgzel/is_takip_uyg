@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:is_takip_uyg/services/auth_service.dart';
 import 'package:is_takip_uyg/services/users/database_service_users.dart';
 
-
 class GetDataList extends StatelessWidget {
   DatabaseServiceUsers databaseServiceUsers=new DatabaseServiceUsers();
   AuthService authService=new AuthService();
@@ -41,10 +40,4 @@ class GetDataList extends StatelessWidget {
         .toList();
   }
 
-  Future<String> getUsername() async {
-    FirebaseUser user = await authService.getCurrentUser();
-    final data =  await Firestore.instance.collection("users").document(user.uid).get();
-    snapshot=data;
-    return snapshot.data['name'].toString() +" "+ snapshot.data['lastName'].toString();
-  }
 }

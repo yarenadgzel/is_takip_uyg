@@ -9,12 +9,13 @@ class DatabaseServiceReports {
   final CollectionReference myRef = Firestore.instance.collection("reports");
   AuthService authService = new AuthService();
 
-  Future createReport(Report report) async {
+  Future saveReport(Report report) async {
     FirebaseUser user = await authService.getCurrentUser();
     String reportID = Uuid().v4().toString();
-    var randomReportID = jsonDecode(reportID);
-    await myRef.document(user.uid).setData({
-      randomReportID:report
+    await myRef.document(user.uid).updateData({
+      reportID: report.toJson()
     });
   }
+
+  //TODO: Giriş yapmış olan kullanıcıya ait raporları getir.
 }

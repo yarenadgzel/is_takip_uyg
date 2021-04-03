@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:is_takip_uyg/component/get_data.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
 import 'package:is_takip_uyg/models/Report.dart';
 import 'package:is_takip_uyg/pages/login_page.dart';
 import 'package:is_takip_uyg/services/auth_service.dart';
+import 'package:is_takip_uyg/services/date_service.dart';
+import 'package:is_takip_uyg/services/location_service.dart';
 import 'package:is_takip_uyg/services/reports/database_service_reports.dart';
 import 'package:is_takip_uyg/services/users/database_service_users.dart';
 
@@ -13,26 +16,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool isActive = true;
-  IconData icon = Icons.play_arrow;
   AuthService auth = new AuthService();
   DatabaseServiceUsers databaseServiceUsers = new DatabaseServiceUsers();
   DatabaseServiceReports databaseServiceReports = new DatabaseServiceReports();
+
   GetDataList getDataList = new GetDataList();
+
+  IconData icon = Icons.play_arrow;
+  bool isActive = true;
+
   Report report = new Report();
-  String lastName = "";
-  String name = "";
   String username = "";
 
   @override
   void initState() {
     super.initState();
-    getDataList.getUsername().then((value) =>
-    {
-      this.setState(() {
-        username = value;
-      }),
-    });
+    databaseServiceUsers.getUsername().then((value) => {
+          this.setState(() {
+            this.username = value;
+          }),
+        });
   }
 
   @override
@@ -87,7 +90,9 @@ class _HomePageState extends State<HomePage> {
                         backgroundColor: Colors.yellow,
                         backgroundImage: AssetImage('assets/images/image.png'),
                       ),
-                      SizedBox(width: 20,),
+                      SizedBox(
+                        width: 20,
+                      ),
                       Text(
                         username,
                         style: TextStyle(
@@ -107,25 +112,15 @@ class _HomePageState extends State<HomePage> {
                 width: 150,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(150),
-                  color: Colors.green,
+                  color: Color(0xff4CAF50),
                 ),
                 child: FlatButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (isActive == false) {
                       icon = Icons.play_arrow;
                     } else {
+                      await startReport(this.report);
                       icon = Icons.pause;
-                      report.reportName = "Deneme";
-                      report.creater = "Yaren";
-                      report.firstLocation = "Edirne";
-                      report.lastLocation = "Edirne";
-                      report.startTime = "29.03.2021";
-                      report.finishTime = "30.03.2021";
-                      report.status = "Başlatıldı";
-                      report.info = "Deneme yapılıyor.";
-                      databaseServiceReports.createReport(report);
-                      // getLocation().then((value) => {report.firstLocation = value});
-                      // getCurrentTime();
                     }
                     setState(() {
                       isActive = !isActive;
@@ -144,4 +139,20 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  Future<void> startReport(Report report) async {
+    FirebaseUser user = await auth.getCurrentUser();
+    print("uid:" + user.uid);
+    report.reportName = "";
+    report.creater = user.uid;
+    report.firstLocation = await getLocation();
+    report.lastLocation = "";
+    report.startTime = getCurrentTime();
+    report.finishTime = "";
+    report.status = "Başlatıldı";
+    report.info = "";
+    await databaseServiceReports.saveReport(report);
+  }
+
+  finishReport(Report report) {}
 }

@@ -17,5 +17,14 @@ class Report {
     return 'Report{reportName: $reportName, creater: $creater, firstLocation: $firstLocation, lastLocation: $lastLocation, startTime: $startTime, finishTime: $finishTime, status: $status, info: $info}';
   }
 
-
+  Map toJson() => {
+        'reportName': reportName,
+        'creater': creater,
+        'firstLocation': firstLocation,
+        'lastLocation': lastLocation,
+        'startTime': startTime,
+        'finishTime': finishTime,
+        'status': status,
+        'info': info
+      };
 }

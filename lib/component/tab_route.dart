@@ -3,7 +3,7 @@ import 'package:is_takip_uyg/constant/constant.dart';
 import 'package:is_takip_uyg/pages/task/admin_tasklist_page.dart';
 import '../pages/home/home_page.dart';
 import '../pages/profile/profile_page.dart';
-import '../pages/task/task_page.dart';
+import '../pages/task/admin_task_page.dart';
 
 class TabRoute extends StatefulWidget {
   @override

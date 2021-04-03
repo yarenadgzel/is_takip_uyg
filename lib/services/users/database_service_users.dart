@@ -16,7 +16,13 @@ class DatabaseServiceUsers {
     });
   }
 
-    createUniqueData(String name, String lastName) async {
+  Future<String> getUsername() async {
+    FirebaseUser user = await authService.getCurrentUser();
+    DocumentSnapshot snapshot =  await myRef.document(user.uid).get();
+    return snapshot.data['name'].toString() +" "+ snapshot.data['lastName'].toString();
+  }
+
+  createUniqueData(String name, String lastName) async {
     var uuid = Uuid(); //Uuid sınıfından bir nesne yarattık
 
     await myRef.document(uuid.v4()).setData({
@@ -26,12 +32,11 @@ class DatabaseServiceUsers {
   }
 
   getUsersData() {
-  Firestore.instance.collection("users").snapshots();
-  //myRef.document("ds").documentID
-
+    Firestore.instance.collection("users").snapshots();
+    //myRef.document("ds").documentID
   }
 
-  updateUsersData(String name,String lastName) async {
+  updateUsersData(String name, String lastName) async {
     FirebaseUser user = await authService.getCurrentUser();
     await myRef.document(user.uid).updateData({
       'name': name,

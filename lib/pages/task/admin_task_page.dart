@@ -3,12 +3,12 @@ import 'package:is_takip_uyg/component/task_card.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
 
 
-class TaskPage extends StatefulWidget {
+class AdminTaskPage extends StatefulWidget {
   @override
-  _TaskPageState createState() => _TaskPageState();
+  _AdminTaskPageState createState() => _AdminTaskPageState();
 }
 
-class _TaskPageState extends State<TaskPage> {
+class _AdminTaskPageState extends State<AdminTaskPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
