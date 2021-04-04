@@ -1,6 +1,9 @@
 import 'dart:core';
 
+import 'package:uuid/uuid.dart';
+
 class Report {
+  String reportID;
   String reportName;
   String creater;
   String firstLocation;
@@ -10,7 +13,10 @@ class Report {
   String status;
   String info;
 
-  Report();
+  //Parametresiz Contructor (Yapılandırıcı)
+  Report(){
+    this.reportID = Uuid().v4().toString();
+  }
 
   @override
   String toString() {

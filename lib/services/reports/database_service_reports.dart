@@ -11,11 +11,18 @@ class DatabaseServiceReports {
 
   Future saveReport(Report report) async {
     FirebaseUser user = await authService.getCurrentUser();
-    String reportID = Uuid().v4().toString();
     await myRef.document(user.uid).updateData({
-      reportID: report.toJson()
+      report.reportID: report.toJson()
     });
   }
 
   //TODO: Giriş yapmış olan kullanıcıya ait raporları getir.
+
+/*  updateReportsData(Report report) async {
+    FirebaseUser user = await authService.getCurrentUser();
+    await myRef.document(user.uid).updateData({
+      report.reportID: report.toJson()
+    });
+  }*/
+
 }

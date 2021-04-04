@@ -12,8 +12,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
-  String email="";
-  String password="";
+  String email = "";
+  String password = "";
 
   AuthService auth = new AuthService();
 
@@ -42,21 +42,22 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: SingleChildScrollView(
                     padding:
-                        EdgeInsets.symmetric(vertical: 120.0, horizontal: 25.0),
+                        EdgeInsets.symmetric(vertical: 80.0, horizontal: 25.0),
                     physics: AlwaysScrollableScrollPhysics(),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+
                       children: [
-                        Text(
-                          "SIGN IN",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: Image.asset(
+                            'assets/images/logo.jpeg',
+                            width: 300.0,
+                            height: 190.0,
+                            fit: BoxFit.fitWidth,
                           ),
                         ),
                         SizedBox(
-                          height: 40,
+                          height: 20,
                         ),
                         buildEmail(),
                         SizedBox(
@@ -200,25 +201,26 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(15),
         ),
         color: Colors.white,
-        child: isLoading ? CircularProgressIndicator() : Text(
-          "LOGIN",
-          style: TextStyle(
-            color: Colors.black54,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        child: isLoading
+            ? CircularProgressIndicator()
+            : Text(
+                "LOGIN",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
       ),
     );
   }
 
   Future<void> login() async {
     if (this.email == "" || this.password == "") {
-      showAlertDialog(context,"Lütfen boş alan bırakmayınız!");
+      showAlertDialog(context, "Lütfen boş alan bırakmayınız!");
       this.setState(() {
         isLoading = false;
       });
-
     } else {
       print("else");
       auth
@@ -228,7 +230,10 @@ class _LoginPageState extends State<LoginPage> {
                   isLoading = false;
                 }),
                 if (value == null)
-                  {showAlertDialog(context,"Lütfen geçerli bir kullanıcı adı veya şifre giriniz")}
+                  {
+                    showAlertDialog(context,
+                        "Lütfen geçerli bir kullanıcı adı veya şifre giriniz")
+                  }
                 else
                   {print("Giriş başarılı")}
               })
@@ -236,7 +241,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  showAlertDialog(BuildContext context,String content) {
+  showAlertDialog(BuildContext context, String content) {
     Widget okButton = FlatButton(
       child: Text(
         "OK",

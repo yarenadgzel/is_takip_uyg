@@ -24,8 +24,7 @@ class _HomePageState extends State<HomePage> {
 
   IconData icon = Icons.play_arrow;
   bool isActive = true;
-
-  Report report = new Report();
+  Report report;
   String username = "";
 
   @override
@@ -117,9 +116,11 @@ class _HomePageState extends State<HomePage> {
                 child: FlatButton(
                   onPressed: () async {
                     if (isActive == false) {
+                      await finishReport(this.report);
                       icon = Icons.play_arrow;
                     } else {
-                      await startReport(this.report);
+                       await startReport(this.report);
+                      //Todo Dialog çağır pop up
                       icon = Icons.pause;
                     }
                     setState(() {
@@ -133,6 +134,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+
             ],
           ),
         ),
@@ -141,8 +143,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> startReport(Report report) async {
+    report=new Report();
     FirebaseUser user = await auth.getCurrentUser();
-    print("uid:" + user.uid);
     report.reportName = "";
     report.creater = user.uid;
     report.firstLocation = await getLocation();
@@ -152,7 +154,21 @@ class _HomePageState extends State<HomePage> {
     report.status = "Başlatıldı";
     report.info = "";
     await databaseServiceReports.saveReport(report);
+    this.setState(() {
+      this.report=report;
+    });
   }
 
-  finishReport(Report report) {}
+  Future<void> finishReport(Report report) async {
+    FirebaseUser user = await auth.getCurrentUser();
+    report.reportName = "";
+    report.creater = user.uid;
+    report.firstLocation = await getLocation();
+    report.lastLocation = await getLocation();
+    report.startTime = getCurrentTime();
+    report.finishTime = getCurrentTime();
+    report.status = "Bitirildi";
+    report.info = "";
+    await databaseServiceReports.saveReport(report);
+  }
 }
