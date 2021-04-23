@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: SingleChildScrollView(
                     padding:
-                        EdgeInsets.symmetric(vertical: 80.0, horizontal: 25.0),
+                    EdgeInsets.symmetric(vertical: 80.0, horizontal: 25.0),
                     physics: AlwaysScrollableScrollPhysics(),
                     child: Column(
 
@@ -204,13 +204,13 @@ class _LoginPageState extends State<LoginPage> {
         child: isLoading
             ? CircularProgressIndicator()
             : Text(
-                "LOGIN",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+          "LOGIN",
+          style: TextStyle(
+            color: Colors.black54,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }
@@ -225,18 +225,22 @@ class _LoginPageState extends State<LoginPage> {
       print("else");
       auth
           .signWithEmailAndPassword(email, password)
-          .then((value) => {
-                this.setState(() {
-                  isLoading = false;
-                }),
-                if (value == null)
-                  {
-                    showAlertDialog(context,
-                        "Lütfen geçerli bir kullanıcı adı veya şifre giriniz")
-                  }
-                else
-                  {print("Giriş başarılı")}
-              })
+          .then((value) =>
+      {
+        print(value),
+        print(email),
+        print(password),
+        this.setState(() {
+          isLoading = false;
+        }),
+        if (value == null)
+          {
+            showAlertDialog(context,
+                "Lütfen geçerli bir kullanıcı adı veya şifre giriniz")
+          }
+        else
+          {print("Giriş başarılı")}
+      })
           .catchError((onError) => {print("hata")});
     }
   }

@@ -1,5 +1,5 @@
 import 'dart:core';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 class Report {
@@ -8,13 +8,12 @@ class Report {
   String creater;
   String firstLocation;
   String lastLocation;
-  String startTime;
-  String finishTime;
+  Timestamp startTime;
+  Timestamp finishTime;
   String status;
   String info;
 
-  //Parametresiz Contructor (Yapılandırıcı)
-  Report(){
+  Report() {
     this.reportID = Uuid().v4().toString();
   }
 
@@ -23,7 +22,9 @@ class Report {
     return 'Report{reportName: $reportName, creater: $creater, firstLocation: $firstLocation, lastLocation: $lastLocation, startTime: $startTime, finishTime: $finishTime, status: $status, info: $info}';
   }
 
-  Map toJson() => {
+  Map toJson() =>
+      {
+        'reportID': reportID,
         'reportName': reportName,
         'creater': creater,
         'firstLocation': firstLocation,
@@ -33,4 +34,18 @@ class Report {
         'status': status,
         'info': info
       };
+
+  Map<String, dynamic> toMap() {
+    return {
+      'reportID': reportID,
+      'reportName': reportName,
+      'creater': creater,
+      'firstLocation': firstLocation,
+      'lastLocation': lastLocation,
+      'startTime': startTime,
+      'finishTime': finishTime,
+      'status': status,
+      'info': info
+    };
+  }
 }

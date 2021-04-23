@@ -37,3 +37,7 @@ const kTextStyleDropdown = TextStyle(color: Colors.black, fontSize: 16);
 const kTextStyleTaskCreationButton =
     TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white);
 const String usersPath = "users";
+const kTextStyleReportDialog=TextStyle(
+    color: Color(0xff878787),
+    fontSize: 20,
+    fontWeight: FontWeight.bold);
