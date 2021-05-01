@@ -40,7 +40,7 @@ class DatabaseServiceReports {
   getReportStatusByUserID() async {
     FirebaseUser user = await authService.getCurrentUser();
     DocumentSnapshot snapshot = await reportsRef.document(user.uid).get();
-    for(var report in snapshot.data.values){
+    for (var report in snapshot.data.values) {
       if (report["status"] == "Başlatıldı") {
         return true;
       }
@@ -48,8 +48,8 @@ class DatabaseServiceReports {
     return false;
   }
 
-  deleteReportsByID(String documentId) async {
-    await reportsRef.document(documentId).delete();
+  deleteReportsByID(String uid) async {
+    await reportsRef.document(uid).delete();
   }
 
 /*  updateReportsData(Report report) async {

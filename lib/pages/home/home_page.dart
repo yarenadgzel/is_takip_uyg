@@ -125,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                 child: FlatButton(
                   onPressed: () async {
                     if (isStarted) {
-                      await finishReport(this.report);
+                      await finishReportDialog(this.report);
                     } else {
                       await startReport(this.report);
                       //Todo Dialog çağır pop up
@@ -141,8 +141,14 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              SizedBox(height:20),
-              ReportList()
+              SizedBox(height: 20),
+              FlatButton(
+                onPressed: () {
+                  showCustomDialog(context, report);
+                },
+                child: Text("Pop Up"),
+              ),
+              ReportList(),
             ],
           ),
         ),
@@ -153,7 +159,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> startReport(Report report) async {
     report = new Report();
     FirebaseUser user = await auth.getCurrentUser();
-    report.reportName = "Deneme";
+    report.reportName = " ";
     report.creater = user.uid;
     report.firstLocation = await getLocation();
     report.lastLocation = "";
@@ -165,10 +171,11 @@ class _HomePageState extends State<HomePage> {
     this.setState(() {
       this.report = report;
     });
-    print(report.startTime);
+
   }
 
-  Future<void> finishReport(Report report) async {
+  Future<void> finishReportDialog(Report report) async {
+    showCustomDialog(context, report);
     FirebaseUser user = await auth.getCurrentUser();
     report.reportName = report.reportName;
     report.creater = user.uid;
@@ -178,7 +185,7 @@ class _HomePageState extends State<HomePage> {
     report.finishTime = Timestamp.now();
     report.status = "Bitirildi";
     report.info = report.info;
-    await databaseServiceReports.saveReport(report);
+    //await databaseServiceReports.saveReport(report);
   }
 
   Future<void> startTask(Task task) async {

@@ -12,8 +12,8 @@ const kTextStyleProfilePage = TextStyle(
   fontWeight: FontWeight.bold,
   color: Colors.black,
 );
-const kTextStyleTaskPage =
-    TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black);
+const kTextStyleTaskType =
+    TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: Colors.white);
 const kExpansionTextStyle =
     TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: Colors.black);
 const kTextStyleAlertTitle = TextStyle(
@@ -41,3 +41,5 @@ const kTextStyleReportDialog=TextStyle(
     color: Color(0xff878787),
     fontSize: 20,
     fontWeight: FontWeight.bold);
+const kExpansionColor =Color(0xff62727B);
+const kExpansionDividerColor=Color(0xff62727B);

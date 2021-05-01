@@ -24,33 +24,72 @@ class _AdminTaskPageState extends State<AdminTaskPage> {
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(height: 10,),
-            ExpansionTile(
-              title: Text("Servis",style: kTextStyleTaskPage,),
-              children: [
-                taskCard(),
-              ],
+            SizedBox(height: 13,),
+            Padding(
+              padding: const EdgeInsets.only(left: 15,right: 15),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
+                  color:kExpansionColor,
+                ),
+                child: ExpansionTile(
+                  title: Text("Servis",style: kTextStyleTaskType,),
+                  children: [
+                    taskCard(),
+                  ],
+                ),
+              ),
             ),
-            SizedBox(height: 40,),
-            ExpansionTile(
-              title: Text("Tamir Bakım",style: kTextStyleTaskPage,),
-              children: [
-                Text("Tamir Bakım Görevi....",style: kExpansionTextStyle,),
-              ],
+            SizedBox(height: 20,),
+            Container(width:378,child: Divider(height: 40,color: kExpansionDividerColor,thickness: 2,),),
+            Padding(
+              padding: const EdgeInsets.only(left: 15,right: 15),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
+                  color:kExpansionColor,
+                ),
+                child: ExpansionTile(
+                  title: Text("Tamir Bakım",style: kTextStyleTaskType,),
+                  children: [
+                    Text("Tamir Bakım Görevi....",style: kExpansionTextStyle,),
+                  ],
+                ),
+              ),
             ),
-            SizedBox(height: 40,),
-            ExpansionTile(
-              title: Text("Revizyon",style: kTextStyleTaskPage,),
-              children: [
-                Text("Revizyon Görevi....",style: kExpansionTextStyle,),
-              ],
+            SizedBox(height: 20,),
+            Container(width:378,child: Divider(height: 40,color:kExpansionDividerColor,thickness: 2,)),
+            Padding(
+              padding: const EdgeInsets.only(left: 15,right: 15),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
+                  color:kExpansionColor,
+                ),
+                child: ExpansionTile(
+                  title: Text("Revizyon",style: kTextStyleTaskType,),
+                  children: [
+                    Text("Revizyon Görevi....",style: kExpansionTextStyle,),
+                  ],
+                ),
+              ),
             ),
-            SizedBox(height: 40,),
-            ExpansionTile(
-              title: Text("Yeni Proje",style: kTextStyleTaskPage,),
-              children: [
-                Text("YeniProje....",style: kExpansionTextStyle,),
-              ],
+            SizedBox(height: 20,),
+            Container(width:378,child: Divider(height: 40,color:kExpansionDividerColor,thickness: 2,)),
+            Padding(
+              padding: const EdgeInsets.only(left: 15,right: 15),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
+                  color:kExpansionColor,
+                ),
+                child: ExpansionTile(
+                  title: Text("Yeni Proje",style: kTextStyleTaskType,),
+                  children: [
+                    Text("YeniProje....",style: kExpansionTextStyle,),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

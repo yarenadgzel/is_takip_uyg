@@ -1,21 +1,27 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
+import 'package:is_takip_uyg/models/Report.dart';
+import 'package:is_takip_uyg/services/auth_service.dart';
+import 'package:is_takip_uyg/services/location_service.dart';
+import 'package:is_takip_uyg/services/reports/database_service_reports.dart';
 import 'package:is_takip_uyg/services/users/database_service_users.dart';
 
-Future<void> showCustomDialog(BuildContext context) async {
+Future<void> showCustomDialog(BuildContext context, Report report) async {
   DatabaseServiceUsers databaseServiceUsers = new DatabaseServiceUsers();
   String username = await databaseServiceUsers.getUsernameByCurrentUser();
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return Padding(
-        padding: const EdgeInsets.only(left: 10,right: 10),
+        padding: const EdgeInsets.only(left: 10, right: 10),
         child: AlertDialog(
           insetPadding: EdgeInsets.zero,
           contentPadding: EdgeInsets.zero,
           clipBehavior: Clip.antiAliasWithSaveLayer,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           elevation: 10,
           backgroundColor: Colors.transparent,
           content: Container(
@@ -49,6 +55,9 @@ Future<void> showCustomDialog(BuildContext context) async {
                         )),
                     DialogReportTextField(
                       text: "Rapor Adı",
+                      onChanged: (text) {
+                        report.reportName = text;
+                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.all(15.0),
@@ -56,14 +65,16 @@ Future<void> showCustomDialog(BuildContext context) async {
                         children: [
                           Expanded(
                               flex: 3,
-                              child: Text("Görev", style: kTextStyleReportDialog)),
+                              child:
+                                  Text("Görev", style: kTextStyleReportDialog)),
                           Expanded(
                             flex: 5,
                             child: Container(
                               height: 45,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(6),
-                                  border: Border.all(color: Colors.grey, width: 1)),
+                                  border:
+                                      Border.all(color: Colors.grey, width: 1)),
                               child: ReportAlertDropdown(),
                             ),
                           ),
@@ -83,16 +94,46 @@ Future<void> showCustomDialog(BuildContext context) async {
                           Expanded(
                               flex: 5,
                               child: Text(username,
-                                  style:
-                                  TextStyle(color: Colors.grey, fontSize: 18))),
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 18))),
                         ],
                       ),
                     ),
-                    DialogReportTextField(
-                      text: "Başlangıç Saati",
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              flex: 3,
+                              child: Text(
+                                "Başlangıç Saati",
+                                style: kTextStyleReportDialog,
+                              )),
+                          Expanded(
+                              flex: 5,
+                              child: Text(report.startTime.toDate().toString(),
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 18))),
+                        ],
+                      ),
                     ),
-                    DialogReportTextField(
-                      text: "Bitiş Saati",
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              flex: 3,
+                              child: Text(
+                                "Bitiş Saati",
+                                style: kTextStyleReportDialog,
+                              )),
+                          Expanded(
+                              flex: 5,
+                              child: Text(report.finishTime.toDate().toString(),
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 18))),
+                        ],
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(15.0),
@@ -106,25 +147,50 @@ Future<void> showCustomDialog(BuildContext context) async {
                               )),
                           Expanded(
                               flex: 5,
-                              child: Text("Bitirildi",
-                                  style:
-                                  TextStyle(color: Colors.grey, fontSize: 18))),
+                              child: Text(report.status,
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 18))),
                         ],
                       ),
                     ),
                     DialogReportTextField(
                       text: "Bilgi",
+                      onChanged: (text) {
+                        report.info = text;
+                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          ReportDialogButton(text: "Kapat",color: Color(0xff2a51a1),),
-                          SizedBox(width: 20,),
-                          ReportDialogButton(text: "Sil",color: Color(0xffea4646),),
-                          SizedBox(width: 20,),
-                          ReportDialogButton(text: "Kaydet",color: Color(0xff02854b),),
+                          ReportDialogButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            text: "Kapat",
+                            color: Color(0xff2a51a1),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          ReportDialogButton(
+                            onPressed: () async {
+                              await deleteReport(report);
+                            },
+                            text: "Sil",
+                            color: Color(0xffea4646),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          ReportDialogButton(
+                            onPressed: () async {
+                              await finishReport(report);
+                            },
+                            text: "Kaydet",
+                            color: Color(0xff02854b),
+                          ),
                         ],
                       ),
                     )
@@ -137,6 +203,25 @@ Future<void> showCustomDialog(BuildContext context) async {
   );
 }
 
+Future<void> finishReport(Report report) async {
+  AuthService auth = new AuthService();
+  DatabaseServiceReports databaseServiceReports = new DatabaseServiceReports();
+  FirebaseUser user = await auth.getCurrentUser();
+  report.reportName = report.reportName;
+  report.creater = user.uid;
+  report.firstLocation = report.firstLocation;
+  report.lastLocation = await getLocation();
+  report.startTime = report.startTime;
+  report.finishTime = Timestamp.now();
+  report.status = "Bitirildi";
+  report.info = report.info;
+  await databaseServiceReports.saveReport(report);
+}
+deleteReport(Report report) async {
+}
+
+
+
 class ReportAlertDropdown extends StatefulWidget {
   @override
   _ReportAlertDropdownState createState() => _ReportAlertDropdownState();
@@ -145,7 +230,6 @@ class ReportAlertDropdown extends StatefulWidget {
 class _ReportAlertDropdownState extends State<ReportAlertDropdown> {
   String value;
   List listItem = ["Deneme", "Deneme 2"];
-
 
   @override
   Widget build(BuildContext context) {
@@ -172,31 +256,36 @@ class _ReportAlertDropdownState extends State<ReportAlertDropdown> {
     );
   }
 }
+
 class ReportDialogButton extends StatelessWidget {
   final String text;
   final Color color;
-  ReportDialogButton({this.text,this.color});
+  final Function onPressed;
+
+  ReportDialogButton({this.text, this.color, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-      color:color,
-      onPressed: () {},
+      color: color,
+      onPressed: onPressed,
       child: Text(
         text,
         style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w500),
+            color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),
       ),
-      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+      shape:
+          RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
     );
   }
 }
 
 class DialogReportTextField extends StatelessWidget {
   final String text;
-  DialogReportTextField({this.text});
+  final Function onChanged;
+
+  DialogReportTextField({this.text, this.onChanged});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -208,10 +297,13 @@ class DialogReportTextField extends StatelessWidget {
           Expanded(
             flex: 5,
             child: Container(
-              decoration:BoxDecoration(border:Border.all(color:Colors.grey),borderRadius: BorderRadius.circular(6)),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(6)),
               height: 45,
               child: TextField(
-                style:TextStyle(color:Colors.black,fontSize: 17),
+                onChanged: onChanged,
+                style: TextStyle(color: Colors.black, fontSize: 17),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                 ),

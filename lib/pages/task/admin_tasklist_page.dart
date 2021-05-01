@@ -40,7 +40,7 @@ class _AdminTaskListPageState extends State<AdminTaskListPage> {
             AdminTaskListCard(
               title: "Devam Eden Görevler",
               subtitle: "Aktif olarak devam eden görevler",
-              color: Color(0xfff6aa6b),
+              color: Color(0xbfeb9052),
               iconData: Icons.event_note,
               iconColor: Colors.white,
             ),

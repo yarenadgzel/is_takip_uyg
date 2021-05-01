@@ -55,7 +55,7 @@ class ReportList extends StatelessWidget {
         .map((doc) => doc["status"] == "Başlatıldı"
             ? ReportCard(
                 report: doc,
-                color:Color(0xfff6aa6b),
+                color:Color(0xbfeb9052),
                 icon: Icons.event_note,
               )
             : ReportCard(

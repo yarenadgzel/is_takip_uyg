@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:is_takip_uyg/services/auth_service.dart';
 import 'package:is_takip_uyg/services/users/database_service_users.dart';
 
-class GetDataList extends StatelessWidget {
+class GetUserList extends StatelessWidget {
   DatabaseServiceUsers databaseServiceUsers=new DatabaseServiceUsers();
   AuthService authService=new AuthService();
   DocumentSnapshot snapshot;
@@ -15,11 +15,11 @@ class GetDataList extends StatelessWidget {
           if (!snapshot.hasData) return new Text("Loading");
           return Container(
               height: 350,
-              child: new ListView(children: getDataList(snapshot)));
+              child: new ListView(children: getUserList(snapshot)));
         });
   }
 
-  getDataList(AsyncSnapshot<QuerySnapshot> snapshot) {
+  getUserList(AsyncSnapshot<QuerySnapshot> snapshot) {
     snapshot.data.documents.map((e) {
       e.documentID;
     });
