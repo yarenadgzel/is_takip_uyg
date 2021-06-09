@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:is_takip_uyg/admin_pages/home/home_page.dart';
+import 'package:is_takip_uyg/admin_pages/profile/profile_page.dart';
+import 'package:is_takip_uyg/admin_pages/task/admin_tasklist_page.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
-import 'package:is_takip_uyg/pages/task/admin_tasklist_page.dart';
-import '../pages/home/home_page.dart';
-import '../pages/profile/profile_page.dart';
-import '../pages/task/admin_task_page.dart';
 
-class TabRoute extends StatefulWidget {
+class AdminTabRoute extends StatefulWidget {
   @override
-  _TabRouteState createState() => _TabRouteState();
+  _AdminTabRouteState createState() => _AdminTabRouteState();
 }
 
-class _TabRouteState extends State<TabRoute> {
+class _AdminTabRouteState extends State<AdminTabRoute> {
   int tabIndex = 0;
   List<Widget> listScreens;
 

@@ -4,8 +4,20 @@ class DatabaseServiceTask{
   final CollectionReference taskRef = Firestore.instance.collection("tasks");
 
   createTask(Task task) async {
-    await taskRef.document().setData(
+    await taskRef.document(task.taskID).setData(
       task.toJson()
     );
+  }
+  updateTask(Task task) async {
+    print("update task ${task}");
+    await taskRef.document(task.taskID).updateData(
+        task.toJson()
+    );
+  }
+  deleteTask(Task task) async {
+    await taskRef.document(task.taskID).delete();
+  }
+  getTasksData() {
+    return taskRef.snapshots();
   }
 }

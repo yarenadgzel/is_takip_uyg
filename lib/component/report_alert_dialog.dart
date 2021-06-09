@@ -1,14 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:is_takip_uyg/component/feedback_aler_dialog.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
 import 'package:is_takip_uyg/models/Report.dart';
-import 'package:is_takip_uyg/services/auth_service.dart';
-import 'package:is_takip_uyg/services/location_service.dart';
 import 'package:is_takip_uyg/services/reports/database_service_reports.dart';
 import 'package:is_takip_uyg/services/users/database_service_users.dart';
 
-Future<void> showCustomDialog(BuildContext context, Report report) async {
+Future<void> showCustomDialogReport(BuildContext context, Report report) async {
   DatabaseServiceUsers databaseServiceUsers = new DatabaseServiceUsers();
   String username = await databaseServiceUsers.getUsernameByCurrentUser();
   showDialog(
@@ -177,6 +174,7 @@ Future<void> showCustomDialog(BuildContext context, Report report) async {
                           ReportDialogButton(
                             onPressed: () async {
                               await deleteReport(report);
+                              showFeedbackAlertDialog(context, "Raporunuz başarılı bir şekilde silinmiştir..");
                             },
                             text: "Sil",
                             color: Color(0xffea4646),
@@ -187,6 +185,8 @@ Future<void> showCustomDialog(BuildContext context, Report report) async {
                           ReportDialogButton(
                             onPressed: () async {
                               await finishReport(report);
+                              showFeedbackAlertDialog(context, "Raporunuz başarılı bir şekilde kaydedilmiştir..");
+
                             },
                             text: "Kaydet",
                             color: Color(0xff02854b),
@@ -204,23 +204,19 @@ Future<void> showCustomDialog(BuildContext context, Report report) async {
 }
 
 Future<void> finishReport(Report report) async {
-  AuthService auth = new AuthService();
   DatabaseServiceReports databaseServiceReports = new DatabaseServiceReports();
-  FirebaseUser user = await auth.getCurrentUser();
-  report.reportName = report.reportName;
-  report.creater = user.uid;
-  report.firstLocation = report.firstLocation;
-  report.lastLocation = await getLocation();
-  report.startTime = report.startTime;
-  report.finishTime = Timestamp.now();
-  report.status = "Bitirildi";
-  report.info = report.info;
   await databaseServiceReports.saveReport(report);
 }
+// -------------------------------------- Functions -------------------------------------- //
+
 deleteReport(Report report) async {
+  print("deleteReport");
+  print("report: ${report}");
+  DatabaseServiceReports databaseServiceReports = new DatabaseServiceReports();
+  await databaseServiceReports.deleteReportsByID(report);
 }
 
-
+// -------------------------------------- View -------------------------------------- //
 
 class ReportAlertDropdown extends StatefulWidget {
   @override

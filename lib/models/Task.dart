@@ -1,8 +1,10 @@
 import 'dart:core';
+import 'package:uuid/uuid.dart';
 
 class Task {
+  String taskID;
   String taskName;
-  List users;
+  String users;
   String company;
   String address;
   String taskType;
@@ -12,7 +14,9 @@ class Task {
   String finishDate;
   String info;
 
-  Task();
+  Task(){
+    this.taskID = Uuid().v4().toString();
+  }
 
   @override
   String toString() {
@@ -20,6 +24,7 @@ class Task {
   }
 
   Map<String, dynamic> toJson() => {
+        'taskID': taskID,
         'taskName': taskName,
         'users': users,
         'company': company,
@@ -31,4 +36,18 @@ class Task {
         'finishDate': finishDate,
         'info': info
       };
+
+  jsonToTask(task){
+    this.taskID = task["taskID"];
+    this.taskName = task["taskName"];
+    this.users = task["users"];
+    this.company = task["company"];
+    this.address = task["address"];
+    this.taskType = task["taskType"];
+    this.taskStatus = task["taskStatus"];
+    this.creationDate = task["creationDate"];
+    this.startDate = task["startDate"];
+    this.finishDate = task["finishDate"];
+    this.info = task["info"];
+  }
 }

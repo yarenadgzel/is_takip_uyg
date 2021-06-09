@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:is_takip_uyg/services/auth_service.dart';
 import 'package:is_takip_uyg/services/users/database_service_users.dart';
 
-class GetUserList extends StatelessWidget {
+class UserList extends StatelessWidget {
   DatabaseServiceUsers databaseServiceUsers=new DatabaseServiceUsers();
   AuthService authService=new AuthService();
   DocumentSnapshot snapshot;

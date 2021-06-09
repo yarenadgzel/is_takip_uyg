@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 class AdminTaskTextfield extends StatelessWidget {
   final String text;
+
   final String hintText;
-  AdminTaskTextfield({this.text,this.hintText});
+  final Function onChanged;
+  final TextEditingController controller;
+  AdminTaskTextfield({this.text,this.hintText,this.onChanged,this.controller});
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -22,6 +25,7 @@ class AdminTaskTextfield extends StatelessWidget {
                 child: Text(
                   text,
                   style: TextStyle(
+                    color:Colors.black87,
                     fontSize: 22,
                     fontWeight: FontWeight.w500,
                   ),
@@ -33,8 +37,11 @@ class AdminTaskTextfield extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 28, right: 28),
                   child: TextField(
+                    controller: controller,
+                    onChanged: onChanged,
+                    style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color:Colors.grey,)),
                       hintStyle: TextStyle(color: Colors.black38),
                       hintText: hintText,
                     ),

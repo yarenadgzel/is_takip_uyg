@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:is_takip_uyg/component/admin_profile_button.dart';
+import 'package:is_takip_uyg/admin_pages/profile/profile_report_page.dart';
+import 'package:is_takip_uyg/admin_pages/profile/profile_users_page.dart';
+import 'package:is_takip_uyg/component/admin/admin_profile_button.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
-
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -32,6 +33,8 @@ class _ProfilePageState extends State<ProfilePage> {
               icon: Icons.people,
               text: "Kullanıcılar",
               onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileUsersPage()));
+
               },
             ),
             SizedBox(height: 20),
@@ -39,6 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
               icon: Icons.assignment,
               text: "Raporlar",
               onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileReportPage()));
               },
             ),
             SizedBox(height: 20),

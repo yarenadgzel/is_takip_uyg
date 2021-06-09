@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:is_takip_uyg/component/admin_creation_dropdown.dart';
-import 'package:is_takip_uyg/component/admin_creation_textfield.dart';
+import 'package:is_takip_uyg/component/admin/admin_creation_textfield.dart';
+import 'package:is_takip_uyg/component/feedback_aler_dialog.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
+import 'package:is_takip_uyg/models/Task.dart';
+import 'package:is_takip_uyg/services/date_service.dart';
+import 'package:is_takip_uyg/services/tasks/database_service_tasks.dart';
 
 class AdminTaskCretionPage extends StatefulWidget {
   @override
@@ -9,10 +12,23 @@ class AdminTaskCretionPage extends StatefulWidget {
 }
 
 class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
-  String value;
-  List listItem = ["Servis", "Tamir Bakım", "Revizyon", "Yeni Proje"];
+  final myControllerTaskName= TextEditingController();
+  final myControllerCompany= TextEditingController();
+  final myControllerAddress= TextEditingController();
+  final myControllerCreationDate= TextEditingController();
+  final myControllerStartDate=TextEditingController();
+  final myControllerFinishDate=TextEditingController();
+  final myControllerInfo=TextEditingController();
+
+
+  DatabaseServiceTask databaseServiceTask=new DatabaseServiceTask();
+  Task task;
+  String valueTaskType;
+  List listItemTaskType = ["Servis", "Tamir Bakım", "Revizyon", "Yeni Proje"];
   String valueTaskStatus;
   List listItemTaskStatus = ["Beklemede", "Devam Ediyor", "Bitirildi"];
+  String valueTaskUsers;
+  List listItemUsers = ["Emre Aydın", "Berfin Bigün","Oğuz Çelik"];
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +72,7 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
                               padding:
                                   const EdgeInsets.only(left: 10, right: 28),
                               child: TextField(
+                               controller: myControllerTaskName,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   hintStyle: TextStyle(color: Colors.black38),
@@ -71,11 +88,79 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
               SizedBox(
                 height: 20,
               ),
-              AdminTaskDropdown(),
+          Center(
+            child: Container(
+              height: 130,
+              width: 400,
+              child: Card(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(10.0)),
+                child: Column(
+                  children: [
+                    SizedBox(height: 12,),
+                    Text(
+                      "Yetkililer",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(height: 20,),
+                    Row(
+                      children: [
+                        Expanded(
+                            flex: 1,
+                            child: Icon(
+                              Icons.people,
+                              size: 42,
+                              color:Color(0xff39969E),
+                            )),
+                        Expanded(
+                            flex: 5,
+                            child: Padding(
+                              padding:
+                              const EdgeInsets.only(left: 10, right: 28),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(18),
+                                    border: Border.all(
+                                        color: Colors.grey, width: 1)),
+                                child: DropdownButton(
+                                  isExpanded: true,
+                                  hint: Center(child: Text("Yetkili Seçiniz")),
+                                  dropdownColor: Colors.white,
+                                  icon: Icon(Icons.arrow_drop_down),
+                                  iconSize: 36,
+                                  underline: SizedBox(),
+                                  style: kTextStyleDropdown,
+                                  value: this.valueTaskUsers,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      this.valueTaskUsers = newValue;
+                                    });
+                                  },
+                                  items: listItemUsers.map((valueItem) {
+                                    return DropdownMenuItem(
+                                      value: valueItem,
+                                      child: Text(valueItem),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
               SizedBox(
                 height: 20,
               ),
               AdminTaskTextfield(
+                controller: myControllerCompany,
                 text: "Firma",
                 hintText: "Firma Adı",
               ),
@@ -83,6 +168,7 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
                 height: 20,
               ),
               AdminTaskTextfield(
+                controller: myControllerAddress,
                 text: "Adres",
                 hintText: "Adres",
               ),
@@ -140,13 +226,13 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
                                       iconSize: 36,
                                       underline: SizedBox(),
                                       style: kTextStyleDropdown,
-                                      value: this.value,
+                                      value: this.valueTaskType,
                                       onChanged: (newValue) {
                                         setState(() {
-                                          this.value = newValue;
+                                          this.valueTaskType = newValue;
                                         });
                                       },
-                                      items: listItem.map((valueItem) {
+                                      items: listItemTaskType.map((valueItem) {
                                         return DropdownMenuItem(
                                           value: valueItem,
                                           child: Text(valueItem),
@@ -290,11 +376,12 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
                                       padding: const EdgeInsets.only(
                                           left: 10, right: 28),
                                       child: TextField(
+                                        controller: myControllerCreationDate,
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(),
                                           hintStyle:
                                               TextStyle(color: Colors.black38),
-                                          hintText: "dd/mm/yyyy",
+                                          hintText: getCurrentTime(),
                                         ),
                                       ),
                                     )),
@@ -326,6 +413,7 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
                                       padding: const EdgeInsets.only(
                                           left: 10, right: 28),
                                       child: TextField(
+                                        controller: myControllerStartDate,
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(),
                                           hintStyle:
@@ -361,6 +449,7 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
                                       padding: const EdgeInsets.only(
                                           left: 10, right: 28),
                                       child: TextField(
+                                        controller: myControllerFinishDate,
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(),
                                           hintStyle:
@@ -404,6 +493,7 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
                               padding:
                                   const EdgeInsets.only(left: 10, right: 28),
                               child: TextField(
+                                controller: myControllerInfo,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   hintStyle: TextStyle(color: Colors.black38),
@@ -424,7 +514,11 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
                   width: 350,
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color: Color(0xff02854B) ),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () async {
+                      await createTask(this.task);
+                      _showDialog();
+                      Navigator.of(context).pop();
+                    },
                     child: Center(child: Text("Oluştur",style: kTextStyleTaskCreationButton,)),
                   ),
                 ),
@@ -433,6 +527,43 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
           ),
         ),
       ),
+    );
+  }
+  Future<void> createTask(Task task) async {
+    task=new Task();
+    task.taskName = myControllerTaskName.text;
+    task.users = valueTaskUsers ;
+    task.company = myControllerCompany.text;
+    task.address = myControllerAddress.text;
+    task.taskType = valueTaskType;
+    task.taskStatus = valueTaskStatus;
+    task.creationDate = getCurrentTime();
+    task.startDate = myControllerStartDate.text;
+    task.finishDate = myControllerFinishDate.text;
+    task.info = myControllerInfo.text;
+    await databaseServiceTask.createTask(task);
+    this.setState(() {
+      this.task = task;
+    });
+  }
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: new Text("Bilgi",style: kTextStyleAlertTitle,),
+          content: new Text("Görev başarılı bir şekilde oluşturulmuştur.", style: kTextStyleAlertContent,),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("OK",style: kTextStyleAlertButton,),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

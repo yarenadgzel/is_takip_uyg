@@ -39,7 +39,9 @@ const kTextStyleTaskCreationButton =
 const String usersPath = "users";
 const kTextStyleReportDialog=TextStyle(
     color: Color(0xff878787),
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: FontWeight.bold);
 const kExpansionColor =Color(0xff62727B);
 const kExpansionDividerColor=Color(0xff62727B);
+
+const oneDay = 60 * 60 * 24 * 1000;

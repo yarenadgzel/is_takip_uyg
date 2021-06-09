@@ -22,20 +22,7 @@ class Report {
     return 'Report{reportName: $reportName, creater: $creater, firstLocation: $firstLocation, lastLocation: $lastLocation, startTime: $startTime, finishTime: $finishTime, status: $status, info: $info}';
   }
 
-  Map toJson() =>
-      {
-        'reportID': reportID,
-        'reportName': reportName,
-        'creater': creater,
-        'firstLocation': firstLocation,
-        'lastLocation': lastLocation,
-        'startTime': startTime,
-        'finishTime': finishTime,
-        'status': status,
-        'info': info
-      };
-
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'reportID': reportID,
       'reportName': reportName,
@@ -47,5 +34,17 @@ class Report {
       'status': status,
       'info': info
     };
+  }
+
+  jsonToReport(report){
+    this.reportID = report["reportID"];
+    this.reportName = report["reportName"];
+    this.creater = report["creater"];
+    this.firstLocation = report["firstLocation"];
+    this.lastLocation = report["lastLocation"];
+    this.startTime = report["startTime"];
+    this.finishTime = report["finishTime"];
+    this.status = report["status"];
+    this.info = report["info"];
   }
 }

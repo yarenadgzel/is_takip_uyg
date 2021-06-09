@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
-import 'package:is_takip_uyg/pages/task/admin_task_page.dart';
 
 class AdminTaskListCard extends StatelessWidget {
   final String title;
@@ -8,21 +7,16 @@ class AdminTaskListCard extends StatelessWidget {
   final IconData iconData;
   final Color iconColor;
   final Color color;
+  final Function onTap;
 
   AdminTaskListCard(
-      {this.title, this.subtitle, this.iconData, this.color, this.iconColor});
+      {this.title, this.subtitle, this.iconData, this.color, this.iconColor,this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AdminTaskPage(),
-              ));
-        },
+        onTap:onTap,
         child: Container(
           height: 126,
           width: 400,
