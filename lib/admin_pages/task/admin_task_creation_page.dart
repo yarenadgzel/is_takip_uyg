@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:is_takip_uyg/component/admin/admin_creation_textfield.dart';
-import 'package:is_takip_uyg/component/feedback_aler_dialog.dart';
+import 'package:is_takip_uyg/component/feedback_alert_dialog.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
 import 'package:is_takip_uyg/models/Task.dart';
 import 'package:is_takip_uyg/services/date_service.dart';
@@ -516,14 +516,14 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
                   child: GestureDetector(
                     onTap: () async {
                       await createTask(this.task);
-                      _showDialog();
-                      Navigator.of(context).pop();
+                     showFeedbackAlertDialog(context, "Görev başarılı bir şekilde oluşturulmuştur..");
                     },
                     child: Center(child: Text("Oluştur",style: kTextStyleTaskCreationButton,)),
                   ),
                 ),
               ),
             ],
+            
           ),
         ),
       ),
@@ -546,24 +546,5 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
       this.task = task;
     });
   }
-  void _showDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: new Text("Bilgi",style: kTextStyleAlertTitle,),
-          content: new Text("Görev başarılı bir şekilde oluşturulmuştur.", style: kTextStyleAlertContent,),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text("OK",style: kTextStyleAlertButton,),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 }

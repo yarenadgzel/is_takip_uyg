@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:is_takip_uyg/component/feedback_aler_dialog.dart';
+import 'package:is_takip_uyg/component/feedback_alert_dialog.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
 import 'package:is_takip_uyg/models/Report.dart';
 import 'package:is_takip_uyg/services/reports/database_service_reports.dart';
@@ -174,7 +174,7 @@ Future<void> showCustomDialogReport(BuildContext context, Report report) async {
                           ReportDialogButton(
                             onPressed: () async {
                               await deleteReport(report);
-                              showFeedbackAlertDialog(context, "Raporunuz başarılı bir şekilde silinmiştir..");
+                              showFeedbackAlertDialog(context, "Rapor başarılı bir şekilde silinmiştir");
                             },
                             text: "Sil",
                             color: Color(0xffea4646),
@@ -185,8 +185,7 @@ Future<void> showCustomDialogReport(BuildContext context, Report report) async {
                           ReportDialogButton(
                             onPressed: () async {
                               await finishReport(report);
-                              showFeedbackAlertDialog(context, "Raporunuz başarılı bir şekilde kaydedilmiştir..");
-
+                              showFeedbackAlertDialog(context, "Rapor başarılı bir şekilde kaydedilmiştir..");
                             },
                             text: "Kaydet",
                             color: Color(0xff02854b),
@@ -207,13 +206,42 @@ Future<void> finishReport(Report report) async {
   DatabaseServiceReports databaseServiceReports = new DatabaseServiceReports();
   await databaseServiceReports.saveReport(report);
 }
-// -------------------------------------- Functions -------------------------------------- //
 
 deleteReport(Report report) async {
   print("deleteReport");
   print("report: ${report}");
   DatabaseServiceReports databaseServiceReports = new DatabaseServiceReports();
   await databaseServiceReports.deleteReportsByID(report);
+}
+
+void _showDialog(BuildContext context, String text) {
+  showDialog(
+    context: context,
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        title: new Text(
+          "Bilgi",
+          style: kTextStyleAlertTitle,
+        ),
+        content: new Text(
+          text,
+          style: kTextStyleAlertContent,
+        ),
+        actions: <Widget>[
+          new FlatButton(
+            child: new Text(
+              "OK",
+              style: kTextStyleAlertButton,
+            ),
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
 
 // -------------------------------------- View -------------------------------------- //
@@ -225,7 +253,7 @@ class ReportAlertDropdown extends StatefulWidget {
 
 class _ReportAlertDropdownState extends State<ReportAlertDropdown> {
   String value;
-  List listItem = ["Deneme", "Deneme 2"];
+  List listItem = ["Servis", "Tamir Bakım","Revizyon","Yeni Proje"];
 
   @override
   Widget build(BuildContext context) {

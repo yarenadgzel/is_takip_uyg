@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:is_takip_uyg/component/feedback_aler_dialog.dart';
+import 'package:is_takip_uyg/component/feedback_alert_dialog.dart';
 import 'file:///D:/flutter_workspace/is_takip_uyg/lib/component/admin/admin_creation_textfield.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
 import 'package:is_takip_uyg/models/Task.dart';
@@ -632,7 +632,7 @@ class _AdminTaskEditPageState extends State<AdminTaskEditPage> {
                       Task task = new Task();
                       task.jsonToTask(widget.task);
                       await databaseServiceTask.deleteTask(task);
-                      showFeedbackAlertDialog(context,"Görev başarılı bir şekilde silinmiştir.");
+                      showFeedbackAlertDialog(context,"Görev başarılı bir şekilde silinmiştir..",);
                     },
                   ),
                   SizedBox(width: 20,),
@@ -643,7 +643,7 @@ class _AdminTaskEditPageState extends State<AdminTaskEditPage> {
                       Task task = new Task();
                       task.jsonToTask(widget.task);
                       await databaseServiceTask.updateTask(task);
-                      showFeedbackAlertDialog(context,"Görev başarılı bir şekilde güncellenmiştir.");
+                      showFeedbackAlertDialog(context,"Görev başarılı bir şekilde güncellenmiştir.",);
                     },
                   ),
                 ],
@@ -655,6 +655,7 @@ class _AdminTaskEditPageState extends State<AdminTaskEditPage> {
     );
   }
 }
+
 
 class TaskDialogButton extends StatelessWidget {
   final String text;
