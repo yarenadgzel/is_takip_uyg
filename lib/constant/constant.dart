@@ -45,3 +45,7 @@ const kExpansionColor =Color(0xff62727B);
 const kExpansionDividerColor=Color(0xff62727B);
 
 const oneDay = 60 * 60 * 24 * 1000;
+
+const demandStatusWaitingApprove="Onay Bekleniyor";
+const demandStatusApprove="Onaylandı";
+const demandStatusReject="Reddedildi";

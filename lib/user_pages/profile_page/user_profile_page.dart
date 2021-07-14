@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:is_takip_uyg/admin_pages/profile/profile_daily_report_list.dart';
-import 'package:is_takip_uyg/admin_pages/profile/profile_report_page.dart';
-import 'package:is_takip_uyg/admin_pages/profile/profile_users_page.dart';
-import 'file:///D:/flutter_workspace/is_takip_uyg/lib/component/admin/admin_profile_button.dart';
+import 'package:is_takip_uyg/component/admin/admin_profile_button.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
+import 'package:is_takip_uyg/user_pages/profile_page/user_demand_creation_page.dart';
+import 'package:is_takip_uyg/user_pages/profile_page/user_demand_list_page.dart';
 import 'package:is_takip_uyg/user_pages/profile_page/user_profile_page_task_list.dart';
 import 'package:is_takip_uyg/user_pages/profile_page/user_profile_page_report_list.dart';
 
@@ -53,6 +52,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
               icon: Icons.email,
               text: "Taleplerim",
               onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>UserDemandListPage()));
               },
             ),
           ],

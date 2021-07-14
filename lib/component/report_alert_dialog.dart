@@ -6,8 +6,13 @@ import 'package:is_takip_uyg/services/reports/database_service_reports.dart';
 import 'package:is_takip_uyg/services/users/database_service_users.dart';
 
 Future<void> showCustomDialogReport(BuildContext context, Report report) async {
+  TextEditingController reportNameController =
+      new TextEditingController(text: report.reportName);
+  TextEditingController infoController =
+      new TextEditingController(text: report.info);
   DatabaseServiceUsers databaseServiceUsers = new DatabaseServiceUsers();
   String username = await databaseServiceUsers.getUsernameByCurrentUser();
+  bool isStarted=false;
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -51,6 +56,7 @@ Future<void> showCustomDialogReport(BuildContext context, Report report) async {
                               fontWeight: FontWeight.w500),
                         )),
                     DialogReportTextField(
+                      controller: reportNameController,
                       text: "Rapor Adı",
                       onChanged: (text) {
                         report.reportName = text;
@@ -126,7 +132,10 @@ Future<void> showCustomDialogReport(BuildContext context, Report report) async {
                               )),
                           Expanded(
                               flex: 5,
-                              child: Text(report.finishTime.toDate().toString(),
+                              child: Text(
+                                  report.finishTime != null
+                                      ? report.finishTime.toDate().toString()
+                                      : "",
                                   style: TextStyle(
                                       color: Colors.grey, fontSize: 18))),
                         ],
@@ -151,6 +160,7 @@ Future<void> showCustomDialogReport(BuildContext context, Report report) async {
                       ),
                     ),
                     DialogReportTextField(
+                      controller: infoController,
                       text: "Bilgi",
                       onChanged: (text) {
                         report.info = text;
@@ -174,7 +184,8 @@ Future<void> showCustomDialogReport(BuildContext context, Report report) async {
                           ReportDialogButton(
                             onPressed: () async {
                               await deleteReport(report);
-                              showFeedbackAlertDialog(context, "Rapor başarılı bir şekilde silinmiştir");
+                              showFeedbackAlertDialog(context,
+                                  "Rapor başarılı bir şekilde silinmiştir");
                             },
                             text: "Sil",
                             color: Color(0xffea4646),
@@ -185,7 +196,8 @@ Future<void> showCustomDialogReport(BuildContext context, Report report) async {
                           ReportDialogButton(
                             onPressed: () async {
                               await finishReport(report);
-                              showFeedbackAlertDialog(context, "Rapor başarılı bir şekilde kaydedilmiştir..");
+                              showFeedbackAlertDialog(context,
+                                  "Rapor başarılı bir şekilde kaydedilmiştir..");
                             },
                             text: "Kaydet",
                             color: Color(0xff02854b),
@@ -214,46 +226,16 @@ deleteReport(Report report) async {
   await databaseServiceReports.deleteReportsByID(report);
 }
 
-void _showDialog(BuildContext context, String text) {
-  showDialog(
-    context: context,
-    builder: (BuildContext dialogContext) {
-      return AlertDialog(
-        backgroundColor: Colors.white,
-        title: new Text(
-          "Bilgi",
-          style: kTextStyleAlertTitle,
-        ),
-        content: new Text(
-          text,
-          style: kTextStyleAlertContent,
-        ),
-        actions: <Widget>[
-          new FlatButton(
-            child: new Text(
-              "OK",
-              style: kTextStyleAlertButton,
-            ),
-            onPressed: () {
-              Navigator.of(dialogContext).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
-
-// -------------------------------------- View -------------------------------------- //
 
 class ReportAlertDropdown extends StatefulWidget {
+
   @override
-  _ReportAlertDropdownState createState() => _ReportAlertDropdownState();
+  ReportAlertDropdownState createState() => ReportAlertDropdownState();
 }
 
-class _ReportAlertDropdownState extends State<ReportAlertDropdown> {
+class ReportAlertDropdownState extends State<ReportAlertDropdown> {
   String value;
-  List listItem = ["Servis", "Tamir Bakım","Revizyon","Yeni Proje"];
+  List listItem = ["Servis", "Tamir Bakım", "Revizyon", "Yeni Proje"];
 
   @override
   Widget build(BuildContext context) {
@@ -307,8 +289,9 @@ class ReportDialogButton extends StatelessWidget {
 class DialogReportTextField extends StatelessWidget {
   final String text;
   final Function onChanged;
+  final TextEditingController controller;
 
-  DialogReportTextField({this.text, this.onChanged});
+  DialogReportTextField({this.text, this.onChanged, this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -326,6 +309,7 @@ class DialogReportTextField extends StatelessWidget {
                   borderRadius: BorderRadius.circular(6)),
               height: 45,
               child: TextField(
+                controller: controller,
                 onChanged: onChanged,
                 style: TextStyle(color: Colors.black, fontSize: 17),
                 decoration: InputDecoration(

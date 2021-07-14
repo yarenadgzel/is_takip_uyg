@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:is_takip_uyg/admin_pages/profile/admin_demand_page.dart';
 import 'package:is_takip_uyg/admin_pages/profile/profile_report_page.dart';
 import 'package:is_takip_uyg/admin_pages/profile/profile_users_page.dart';
 import 'package:is_takip_uyg/component/admin/admin_profile_button.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
+import 'package:is_takip_uyg/user_pages/profile_page/user_demand_creation_page.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -50,6 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
               icon: Icons.email,
               text: "Talepler",
               onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminDemandListPage()));
               },
             ),
           ],

@@ -1,3 +1,4 @@
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:is_takip_uyg/component/admin/admin_creation_textfield.dart';
 import 'package:is_takip_uyg/component/feedback_alert_dialog.dart';
@@ -12,24 +13,22 @@ class AdminTaskCretionPage extends StatefulWidget {
 }
 
 class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
-  final myControllerTaskName= TextEditingController();
-  final myControllerCompany= TextEditingController();
-  final myControllerAddress= TextEditingController();
-  final myControllerCreationDate= TextEditingController();
-  final myControllerStartDate=TextEditingController();
-  final myControllerFinishDate=TextEditingController();
-  final myControllerInfo=TextEditingController();
+  final myControllerTaskName = TextEditingController();
+  final myControllerCompany = TextEditingController();
+  final myControllerAddress = TextEditingController();
+  final myControllerCreationDate = TextEditingController();
+  final myControllerInfo = TextEditingController();
 
-
-  DatabaseServiceTask databaseServiceTask=new DatabaseServiceTask();
+  DatabaseServiceTask databaseServiceTask = new DatabaseServiceTask();
   Task task;
   String valueTaskType;
   List listItemTaskType = ["Servis", "Tamir Bakım", "Revizyon", "Yeni Proje"];
   String valueTaskStatus;
   List listItemTaskStatus = ["Beklemede", "Devam Ediyor", "Bitirildi"];
   String valueTaskUsers;
-  List listItemUsers = ["Emre Aydın", "Berfin Bigün","Oğuz Çelik"];
-
+  List listItemUsers = ["Emre Aydın", "Berfin Bigün", "Oğuz Çelik"];
+  String startDate="";
+  String finishDate="";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +71,7 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
                               padding:
                                   const EdgeInsets.only(left: 10, right: 28),
                               child: TextField(
-                               controller: myControllerTaskName,
+                                controller: myControllerTaskName,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   hintStyle: TextStyle(color: Colors.black38),
@@ -88,74 +87,79 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
               SizedBox(
                 height: 20,
               ),
-          Center(
-            child: Container(
-              height: 130,
-              width: 400,
-              child: Card(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0)),
-                child: Column(
-                  children: [
-                    SizedBox(height: 12,),
-                    Text(
-                      "Yetkililer",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: 20,),
-                    Row(
+              Center(
+                child: Container(
+                  height: 130,
+                  width: 400,
+                  child: Card(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0)),
+                    child: Column(
                       children: [
-                        Expanded(
-                            flex: 1,
-                            child: Icon(
-                              Icons.people,
-                              size: 42,
-                              color:Color(0xff39969E),
-                            )),
-                        Expanded(
-                            flex: 5,
-                            child: Padding(
-                              padding:
-                              const EdgeInsets.only(left: 10, right: 28),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(18),
-                                    border: Border.all(
-                                        color: Colors.grey, width: 1)),
-                                child: DropdownButton(
-                                  isExpanded: true,
-                                  hint: Center(child: Text("Yetkili Seçiniz")),
-                                  dropdownColor: Colors.white,
-                                  icon: Icon(Icons.arrow_drop_down),
-                                  iconSize: 36,
-                                  underline: SizedBox(),
-                                  style: kTextStyleDropdown,
-                                  value: this.valueTaskUsers,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      this.valueTaskUsers = newValue;
-                                    });
-                                  },
-                                  items: listItemUsers.map((valueItem) {
-                                    return DropdownMenuItem(
-                                      value: valueItem,
-                                      child: Text(valueItem),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            )),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          "Yetkililer",
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: Icon(
+                                  Icons.people,
+                                  size: 42,
+                                  color: Color(0xff39969E),
+                                )),
+                            Expanded(
+                                flex: 5,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 28),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(18),
+                                        border: Border.all(
+                                            color: Colors.grey, width: 1)),
+                                    child: DropdownButton(
+                                      isExpanded: true,
+                                      hint: Center(
+                                          child: Text("Yetkili Seçiniz")),
+                                      dropdownColor: Colors.white,
+                                      icon: Icon(Icons.arrow_drop_down),
+                                      iconSize: 36,
+                                      underline: SizedBox(),
+                                      style: kTextStyleDropdown,
+                                      value: this.valueTaskUsers,
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          this.valueTaskUsers = newValue;
+                                        });
+                                      },
+                                      items: listItemUsers.map((valueItem) {
+                                        return DropdownMenuItem(
+                                          value: valueItem,
+                                          child: Text(valueItem),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
               SizedBox(
                 height: 20,
               ),
@@ -408,20 +412,31 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
                                 Expanded(
                                     flex: 2, child: Text("Başlama Tarihi")),
                                 Expanded(
-                                    flex: 5,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10, right: 28),
-                                      child: TextField(
-                                        controller: myControllerStartDate,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          hintStyle:
-                                              TextStyle(color: Colors.black38),
-                                          hintText: "dd/mm/yyyy",
-                                        ),
-                                      ),
-                                    )),
+                                  flex: 5,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10, right: 28),
+                                    child: DateTimePicker(
+                                      initialValue: '',
+                                      firstDate: DateTime(2000),
+                                      lastDate: DateTime(2100),
+                                      onChanged: (val) => {
+                                        this.startDate=val
+
+                                      },
+                                      onSaved: (val) => print(val),
+                                    ),
+                                    // child: TextField(
+                                    //   controller: myControllerStartDate,
+                                    //   decoration: InputDecoration(
+                                    //     border: OutlineInputBorder(),
+                                    //     hintStyle:
+                                    //         TextStyle(color: Colors.black38),
+                                    //     hintText: "dd/mm/yyyy",
+                                    //   ),
+                                    // ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -448,14 +463,14 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
                                     child: Padding(
                                       padding: const EdgeInsets.only(
                                           left: 10, right: 28),
-                                      child: TextField(
-                                        controller: myControllerFinishDate,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          hintStyle:
-                                              TextStyle(color: Colors.black38),
-                                          hintText: "dd/mm/yyyy",
-                                        ),
+                                      child: DateTimePicker(
+                                        initialValue: '',
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime(2100),
+                                        onChanged: (val) => {
+                                          this.finishDate=val
+                                        },
+                                        onSaved: (val) => print(val),
                                       ),
                                     )),
                               ],
@@ -506,45 +521,53 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: Container(
                   height: 45,
                   width: 350,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color: Color(0xff02854B) ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Color(0xff02854B)),
                   child: GestureDetector(
                     onTap: () async {
                       await createTask(this.task);
-                     showFeedbackAlertDialog(context, "Görev başarılı bir şekilde oluşturulmuştur..");
+                      showFeedbackAlertDialog(context,
+                          "Görev başarılı bir şekilde oluşturulmuştur..");
                     },
-                    child: Center(child: Text("Oluştur",style: kTextStyleTaskCreationButton,)),
+                    child: Center(
+                        child: Text(
+                      "Oluştur",
+                      style: kTextStyleTaskCreationButton,
+                    )),
                   ),
                 ),
               ),
             ],
-            
           ),
         ),
       ),
     );
   }
+
   Future<void> createTask(Task task) async {
-    task=new Task();
+    task = new Task();
     task.taskName = myControllerTaskName.text;
-    task.users = valueTaskUsers ;
+    task.users = valueTaskUsers;
     task.company = myControllerCompany.text;
     task.address = myControllerAddress.text;
     task.taskType = valueTaskType;
     task.taskStatus = valueTaskStatus;
     task.creationDate = getCurrentTime();
-    task.startDate = myControllerStartDate.text;
-    task.finishDate = myControllerFinishDate.text;
+    task.startDate = startDate;
+    task.finishDate = finishDate;
     task.info = myControllerInfo.text;
     await databaseServiceTask.createTask(task);
     this.setState(() {
       this.task = task;
     });
   }
-
 }

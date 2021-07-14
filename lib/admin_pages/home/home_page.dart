@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   bool isActive = true;
   Report report;
   String username = "";
-  bool isStarted = false;
+  bool isStarted= false;
 
   @override
   void initState() {
@@ -59,7 +59,6 @@ class _HomePageState extends State<HomePage> {
             }
         });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,7 +141,6 @@ class _HomePageState extends State<HomePage> {
                       await finishReport(this.report);
                     } else {
                       await startReport(this.report);
-                      //Todo Dialog çağır pop up
                     }
                     setState(() {
                       isStarted = !isStarted;

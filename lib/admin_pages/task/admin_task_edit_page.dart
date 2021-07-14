@@ -1,6 +1,6 @@
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:is_takip_uyg/component/feedback_alert_dialog.dart';
-import 'file:///D:/flutter_workspace/is_takip_uyg/lib/component/admin/admin_creation_textfield.dart';
+import 'package:is_takip_uyg/component/admin/admin_creation_textfield.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
 import 'package:is_takip_uyg/models/Task.dart';
 import 'package:is_takip_uyg/services/date_service.dart';
@@ -10,8 +10,6 @@ class AdminTaskEditPage extends StatefulWidget {
   dynamic task;
 
   AdminTaskEditPage(dynamic task) {
-    print('AdminTaskEditPage');
-    print('task cnt: ${task}');
     this.task = task;
   }
 
@@ -31,11 +29,7 @@ class _AdminTaskEditPageState extends State<AdminTaskEditPage> {
   DatabaseServiceTask databaseServiceTask = new DatabaseServiceTask();
   List listItemTaskType = ["Servis", "Tamir Bakım", "Revizyon", "Yeni Proje"];
   List listItemTaskStatus = ["Beklemede", "Devam Ediyor", "Bitirildi"];
-  List listItemUsers = [
-    "Emre Aydın",
-    "Berfin Bigün",
-    "Oğuz Çelik"
-  ];
+  List listItemUsers = ["Emre Aydın", "Berfin Bigün", "Oğuz Çelik"];
 
   @override
   void initState() {
@@ -60,7 +54,6 @@ class _AdminTaskEditPageState extends State<AdminTaskEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("task2: ${widget.task}");
     return Scaffold(
       backgroundColor: kPageBackgroundColor,
       appBar: AppBar(
@@ -110,9 +103,10 @@ class _AdminTaskEditPageState extends State<AdminTaskEditPage> {
                                 style: TextStyle(color: Colors.black),
                                 decoration: InputDecoration(
                                   enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                    color: Colors.grey,
-                                  )),
+                                    borderSide: BorderSide(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
                                   hintStyle: TextStyle(color: Colors.black38),
                                   hintText: "Görev Adı",
                                 ),
@@ -491,21 +485,34 @@ class _AdminTaskEditPageState extends State<AdminTaskEditPage> {
                                     child: Padding(
                                       padding: const EdgeInsets.only(
                                           left: 10, right: 28),
-                                      child: TextField(
-                                        onChanged: (value) {
+                                      child: DateTimePicker(
+                                        //controller: finishDateController,
+                                        initialValue: widget.task["startDate"],
+                                        style: TextStyle(color: Colors.black),
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime(2100),
+                                        onChanged: (val) {
                                           setState(() {
-                                            widget.task['startDate'] = value;
+                                            widget.task['startDate'] = val;
                                           });
                                         },
-                                        controller: startDateController,
-                                        style: TextStyle(color: Colors.black),
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          hintStyle:
-                                              TextStyle(color: Colors.black38),
-                                          hintText: "dd/mm/yyyy",
-                                        ),
+                                        onSaved: (val) => print(val),
                                       ),
+                                      // child: TextField(
+                                      //   onChanged: (value) {
+                                      //     setState(() {
+                                      //       widget.task['startDate'] = value;
+                                      //     });
+                                      //   },
+                                      //   controller: startDateController,
+                                      //   style: TextStyle(color: Colors.black),
+                                      //   decoration: InputDecoration(
+                                      //     border: OutlineInputBorder(),
+                                      //     hintStyle:
+                                      //         TextStyle(color: Colors.black38),
+                                      //     hintText: "dd/mm/yyyy",
+                                      //   ),
+                                      // ),
                                     )),
                               ],
                             ),
@@ -538,21 +545,33 @@ class _AdminTaskEditPageState extends State<AdminTaskEditPage> {
                                     child: Padding(
                                       padding: const EdgeInsets.only(
                                           left: 10, right: 28),
-                                      child: TextField(
-                                        onChanged: (value) {
+                                      child: DateTimePicker(
+                                        initialValue: widget.task["finishDate"],
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime(2100),
+                                        style: TextStyle(color: Colors.black),
+                                        onChanged: (val) {
                                           setState(() {
-                                            widget.task['finishDate'] = value;
+                                            widget.task['finishDate'] = val;
                                           });
                                         },
-                                        controller: finishDateController,
-                                        style: TextStyle(color: Colors.black),
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          hintStyle:
-                                              TextStyle(color: Colors.black38),
-                                          hintText: "dd/mm/yyyy",
-                                        ),
+                                        onSaved: (val) => print(val),
                                       ),
+                                      // child: TextField(
+                                      //   onChanged: (value) {
+                                      //     setState(() {
+                                      //       widget.task['finishDate'] = value;
+                                      //     });
+                                      //   },
+                                      //   controller: finishDateController,
+                                      //   style: TextStyle(color: Colors.black),
+                                      //   decoration: InputDecoration(
+                                      //     border: OutlineInputBorder(),
+                                      //     hintStyle:
+                                      //         TextStyle(color: Colors.black38),
+                                      //     hintText: "dd/mm/yyyy",
+                                      //   ),
+                                      // ),
                                     )),
                               ],
                             ),
@@ -624,7 +643,9 @@ class _AdminTaskEditPageState extends State<AdminTaskEditPage> {
                       Navigator.pop(context);
                     },
                   ),
-                  SizedBox(width: 20,),
+                  SizedBox(
+                    width: 20,
+                  ),
                   TaskDialogButton(
                     text: "Sil",
                     color: Color(0xffea4646),
@@ -632,10 +653,15 @@ class _AdminTaskEditPageState extends State<AdminTaskEditPage> {
                       Task task = new Task();
                       task.jsonToTask(widget.task);
                       await databaseServiceTask.deleteTask(task);
-                      showFeedbackAlertDialog(context,"Görev başarılı bir şekilde silinmiştir..",);
+                      showFeedbackTaskEditAlertDialog(
+                        context,
+                        "Görev başarılı bir şekilde silinmiştir..",
+                      );
                     },
                   ),
-                  SizedBox(width: 20,),
+                  SizedBox(
+                    width: 20,
+                  ),
                   TaskDialogButton(
                     text: "Güncelle",
                     color: Color(0xff02854b),
@@ -643,7 +669,10 @@ class _AdminTaskEditPageState extends State<AdminTaskEditPage> {
                       Task task = new Task();
                       task.jsonToTask(widget.task);
                       await databaseServiceTask.updateTask(task);
-                      showFeedbackAlertDialog(context,"Görev başarılı bir şekilde güncellenmiştir.",);
+                      showFeedbackTaskEditAlertDialog(
+                        context,
+                        "Görev başarılı bir şekilde güncellenmiştir.",
+                      );
                     },
                   ),
                 ],
@@ -656,7 +685,6 @@ class _AdminTaskEditPageState extends State<AdminTaskEditPage> {
   }
 }
 
-
 class TaskDialogButton extends StatelessWidget {
   final String text;
   final Color color;
@@ -667,7 +695,7 @@ class TaskDialogButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-     width: 118,
+      width: 118,
       child: RaisedButton(
         color: color,
         onPressed: onPressed,
@@ -676,9 +704,42 @@ class TaskDialogButton extends StatelessWidget {
           style: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),
         ),
-        shape:
-            RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+        shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(10.0)),
       ),
     );
   }
+}
+
+showFeedbackTaskEditAlertDialog(BuildContext context, String content) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        backgroundColor: Colors.white,
+        title: Text(
+          "Bilgi",
+          style: kTextStyleAlertTitle,
+        ),
+        content: Text(
+          content,
+          style: kTextStyleAlertContent,
+        ),
+        actions: [
+          FlatButton(
+            child: Text(
+              "OK",
+              style: kTextStyleAlertButton,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
+        ],
+      );
+    },
+  )
+      .then((value) => Navigator.pop(context))
+      .then((value) => Navigator.pop(context));
 }

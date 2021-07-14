@@ -9,7 +9,6 @@ class DatabaseServiceTask{
     );
   }
   updateTask(Task task) async {
-    print("update task ${task}");
     await taskRef.document(task.taskID).updateData(
         task.toJson()
     );

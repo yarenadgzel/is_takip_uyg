@@ -236,6 +236,7 @@ class _TaskCardState extends State<TaskCard> {
             ),
           ),
         ),
+        SizedBox(height: 15,),
       ],
     );
   }

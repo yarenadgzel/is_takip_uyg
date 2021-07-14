@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:is_takip_uyg/admin_pages/home/home_page.dart';
-import 'package:is_takip_uyg/admin_pages/profile/profile_page.dart';
-import 'package:is_takip_uyg/admin_pages/task/admin_tasklist_page.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
-import 'file:///D:/flutter_workspace/is_takip_uyg/lib/user_pages/home_page/user_home_page.dart';
-import 'file:///D:/flutter_workspace/is_takip_uyg/lib/user_pages/profile_page/user_profile_page.dart';
-import 'file:///D:/flutter_workspace/is_takip_uyg/lib/user_pages/task_page/user_task_page.dart';
+import 'package:is_takip_uyg/user_pages/home_page/user_home_page.dart';
+import 'package:is_takip_uyg/user_pages/profile_page/user_profile_page.dart';
+import 'package:is_takip_uyg/user_pages/task_page/user_task_page.dart';
 
 class UserTabRoute extends StatefulWidget {
   @override

@@ -1,41 +1,41 @@
-import 'package:flutter/material.dart';
-import 'package:is_takip_uyg/component/report_alert_dialog.dart';
-import 'package:is_takip_uyg/models/Report.dart';
-import 'package:is_takip_uyg/services/users/database_service_users.dart';
 
-class ReportCard extends StatefulWidget {
+import 'package:flutter/material.dart';
+import 'package:is_takip_uyg/component/admin/admin_demand_alert_dialog.dart';
+import 'package:is_takip_uyg/models/Demand.dart';
+import 'package:is_takip_uyg/services/users/database_service_users.dart';
+import 'user/user_demand_alert_dialog.dart';
+
+class DemandCard extends StatefulWidget {
+  dynamic demand;
   final IconData icon;
   final Color color;
-  dynamic report;
+  final person;
 
-  ReportCard({this.report, this.icon, this.color});
+  DemandCard({this.demand, this.icon, this.color,this.person}) ;
 
   @override
-  _ReportCardState createState() => _ReportCardState();
+  _DemandCardState createState() => _DemandCardState();
 }
 
-class _ReportCardState extends State<ReportCard> {
+class _DemandCardState extends State<DemandCard> {
   DatabaseServiceUsers databaseServiceUsers = new DatabaseServiceUsers();
   String username = "";
-  Report report = new Report();
+  Demand report = new Demand();
   @override
   void initState() {
     super.initState();
-    databaseServiceUsers
-        .getUsernameByUserID(widget.report["creater"])
-        .then((value) => {
-              this.setState(() {
-                this.username = value;
-              }),
-            });
+    databaseServiceUsers.getUsernameByCurrentUser().then((value) => {
+      this.setState(() {
+        this.username = value;
+      }),
+    });
   }
-
   @override
   Widget build(BuildContext context) {
     return FlatButton(
       onPressed: () {
-        print(report.jsonToReport(widget.report));
-        showCustomDialogReport(context, report);
+        widget.person=="user" ?
+        showCustomDialogUserDemand(context, widget.demand): showCustomDialogAdminDemand(context, widget.demand);
       },
       child: Column(
         children: [
@@ -57,7 +57,7 @@ class _ReportCardState extends State<ReportCard> {
                         child: Icon(
                           widget.icon,
                           color: Colors.white,
-                          size: 60,
+                          size: 50,
                         )),
                     Expanded(
                       flex: 4,
@@ -68,13 +68,13 @@ class _ReportCardState extends State<ReportCard> {
                             Expanded(
                                 flex: 1,
                                 child: Text(
-                                  "Rapor Adı:",
+                                  "Talep Adı :",
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 15),
                                 )),
                             Expanded(
                                 flex: 2,
-                                child: Text(widget.report['reportName'],
+                                child: Text(widget.demand['demandName'],
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 18,
@@ -116,35 +116,29 @@ class _ReportCardState extends State<ReportCard> {
                             Expanded(
                                 flex: 2,
                                 child: Text(
-                                  "Başlangıç Saati:",
+                                  "Başlangıç Tarihi:",
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 15),
                                 )),
                             Expanded(
                                 flex: 2,
                                 child: Text(
-                                    widget.report["startTime"]
-                                        .toDate()
-                                        .toString()
-                                        .substring(0, 16),
+                                    widget.demand["startDate"],
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 18,
                                         fontWeight: FontWeight.w700))),
                             Expanded(
                                 flex: 1,
-                                child: Text("Bitiş Saati:",
+                                child: Text("Bitiş Tarihi:",
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 15))),
                             Expanded(
                               flex: 2,
                               child: Text(
-                                  widget.report["finishTime"] == null
+                                  widget.demand["finishDate"] == null
                                       ? ""
-                                      : widget.report["finishTime"]
-                                          .toDate()
-                                          .toString()
-                                          .substring(0, 16),
+                                      : widget.demand["finishDate"],
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 18,

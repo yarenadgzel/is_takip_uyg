@@ -4,7 +4,6 @@ import 'package:is_takip_uyg/component/task_card.dart';
 import 'package:is_takip_uyg/services/auth_service.dart';
 import 'package:is_takip_uyg/services/tasks/database_service_tasks.dart';
 
-
 class AdminTaskList extends StatelessWidget {
   final String status;
   DatabaseServiceTask databaseServiceTask = new DatabaseServiceTask();
@@ -20,14 +19,15 @@ class AdminTaskList extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) return new LinearProgressIndicator();
           return Container(
-              height: 350,
+              height:550,
               child: new ListView(children: getTaskList(snapshot, status)));
         });
   }
 
   getTaskList(AsyncSnapshot<QuerySnapshot> snapshot, String status) {
     return snapshot.data.documents
-        .map((doc) => doc["taskStatus"] == status ? TaskCard(task: doc): Container())
+        .map((doc) =>
+            doc["taskStatus"] == status ? TaskCard(task: doc) : Container())
         .toList();
   }
 }
