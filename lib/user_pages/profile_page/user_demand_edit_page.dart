@@ -1,5 +1,4 @@
 import 'package:date_time_picker/date_time_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
 import 'package:is_takip_uyg/models/Demand.dart';
@@ -27,6 +26,7 @@ class _UserDemandEditPageState extends State<UserDemandEditPage> {
 
   @override
   void initState() {
+    print("init state");
     super.initState();
     if (widget.demand != null) {
       this.demandNameController =
@@ -70,12 +70,13 @@ class _UserDemandEditPageState extends State<UserDemandEditPage> {
                     child: Row(
                       children: [
                         Expanded(
-                            flex: 1,
-                            child: Icon(
-                              Icons.contact_mail,
-                              size: 42,
-                              color: Color(0xff39969E),
-                            )),
+                          flex: 1,
+                          child: Icon(
+                            Icons.contact_mail,
+                            size: 42,
+                            color: Color(0xff39969E),
+                          ),
+                        ),
                         Expanded(
                             flex: 5,
                             child: Padding(
@@ -85,7 +86,9 @@ class _UserDemandEditPageState extends State<UserDemandEditPage> {
                                 controller: demandNameController,
                                 onChanged: (value) {
                                   setState(() {
+                                    print("value : ${value}");
                                     widget.demand['demandName'] = value;
+                                    print("widget.demand:" + widget.demand['demandName']);
                                   });
                                 },
                                 style: TextStyle(color: Colors.black),
@@ -202,18 +205,16 @@ class _UserDemandEditPageState extends State<UserDemandEditPage> {
                                     padding: const EdgeInsets.only(
                                         left: 10, right: 28),
                                     child: DateTimePicker(
-                                        controller: startDateController,
-                                        onChanged: (val) => {
-                                          setState(() {
-                                            widget.demand['startDate'] =
-                                                val;
-                                          })
-                                        },
+                                      controller: startDateController,
+                                      onChanged: (val) => {
+                                        setState(() {
+                                          widget.demand['startDate'] = val;
+                                        })
+                                      },
                                       style: TextStyle(color: Colors.black87),
                                       firstDate: DateTime(2000),
                                       lastDate: DateTime(2100),
                                     ),
-
                                   ),
                                 ),
                               ],
@@ -337,7 +338,7 @@ class _UserDemandEditPageState extends State<UserDemandEditPage> {
                               padding:
                                   const EdgeInsets.only(left: 10, right: 28),
                               child: TextField(
-                                controller:infoController,
+                                controller: infoController,
                                 onChanged: (value) {
                                   setState(() {
                                     widget.demand['info'] = value;
@@ -413,7 +414,6 @@ class _UserDemandEditPageState extends State<UserDemandEditPage> {
       ),
     );
   }
-
 }
 
 class DemandDialogButton extends StatelessWidget {

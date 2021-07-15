@@ -28,7 +28,7 @@ class UserFilteredTaskList extends StatelessWidget {
   getTaskList(AsyncSnapshot<QuerySnapshot> snapshot, String taskType,String username) {
     print(username);
     return snapshot.data.documents
-        .map((doc) => doc["taskStatus"] == "Bitirildi"
+        .map((doc) => doc["taskStatus"] != "Devam Ediyor"
             ? Container()
             : doc["taskType"] == taskType && doc["users"] == username
                 ? TaskCard(task: doc)

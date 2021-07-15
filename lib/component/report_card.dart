@@ -1,6 +1,9 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:is_takip_uyg/component/report_alert_dialog.dart';
 import 'package:is_takip_uyg/models/Report.dart';
+import 'package:is_takip_uyg/services/tasks/database_service_tasks.dart';
 import 'package:is_takip_uyg/services/users/database_service_users.dart';
 
 class ReportCard extends StatefulWidget {
@@ -18,6 +21,7 @@ class _ReportCardState extends State<ReportCard> {
   DatabaseServiceUsers databaseServiceUsers = new DatabaseServiceUsers();
   String username = "";
   Report report = new Report();
+
   @override
   void initState() {
     super.initState();
@@ -26,7 +30,7 @@ class _ReportCardState extends State<ReportCard> {
         .then((value) => {
               this.setState(() {
                 this.username = value;
-              }),
+              })
             });
   }
 
@@ -66,7 +70,7 @@ class _ReportCardState extends State<ReportCard> {
                         child: Column(
                           children: [
                             Expanded(
-                                flex: 1,
+                                flex: 2,
                                 child: Text(
                                   "Rapor Adı:",
                                   style: TextStyle(

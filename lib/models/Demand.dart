@@ -29,7 +29,7 @@ class Demand {
         'info': info
       };
 
-  jsonToDemand(demand) {
+  jsonToDemand(dynamic demand) {
     this.demandName = demand["demandName"];
     this.demandID = demand["demandID"];
     this.createrID = demand["createrID"];

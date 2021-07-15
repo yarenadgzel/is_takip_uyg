@@ -13,8 +13,6 @@ import 'package:is_takip_uyg/services/reports/database_service_reports.dart';
 import 'package:is_takip_uyg/services/tasks/database_service_tasks.dart';
 import 'package:is_takip_uyg/services/users/database_service_users.dart';
 
-
-
 const oneDay = 60 * 60 * 24 * 1000;
 
 class HomePage extends StatefulWidget {
@@ -23,15 +21,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Task task ;
+  Task task;
+
   AuthService auth = new AuthService();
   DatabaseServiceUsers databaseServiceUsers = new DatabaseServiceUsers();
-  DatabaseServiceTask databaseServiceTask = new DatabaseServiceTask();
   DatabaseServiceReports databaseServiceReports = new DatabaseServiceReports();
   bool isActive = true;
   Report report;
   String username = "";
-  bool isStarted= false;
+  bool isStarted = false;
 
   @override
   void initState() {
@@ -59,6 +57,7 @@ class _HomePageState extends State<HomePage> {
             }
         });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

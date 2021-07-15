@@ -27,8 +27,9 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
   List listItemTaskStatus = ["Beklemede", "Devam Ediyor", "Bitirildi"];
   String valueTaskUsers;
   List listItemUsers = ["Emre Aydın", "Berfin Bigün", "Oğuz Çelik"];
-  String startDate="";
-  String finishDate="";
+  String startDate = "";
+  String finishDate = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -420,10 +421,8 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
                                       initialValue: '',
                                       firstDate: DateTime(2000),
                                       lastDate: DateTime(2100),
-                                      onChanged: (val) => {
-                                        this.startDate=val
-
-                                      },
+                                      onChanged: (val) =>
+                                          {this.startDate = val},
                                       onSaved: (val) => print(val),
                                     ),
                                     // child: TextField(
@@ -467,9 +466,8 @@ class _AdminTaskCretionPageState extends State<AdminTaskCretionPage> {
                                         initialValue: '',
                                         firstDate: DateTime(2000),
                                         lastDate: DateTime(2100),
-                                        onChanged: (val) => {
-                                          this.finishDate=val
-                                        },
+                                        onChanged: (val) =>
+                                            {this.finishDate = val},
                                         onSaved: (val) => print(val),
                                       ),
                                     )),

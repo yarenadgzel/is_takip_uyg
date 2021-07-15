@@ -233,7 +233,7 @@ class _UserDemandCreationPageState extends State<UserDemandCreationPage> {
                                     child: Padding(
                                       padding: const EdgeInsets.only(
                                           left: 10, right: 28),
-                                      child:Text("Belirtilmedi")
+                                      child:Text("")
                                     )),
                               ],
                             ),

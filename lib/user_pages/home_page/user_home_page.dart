@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,6 @@ import 'package:is_takip_uyg/services/reports/database_service_reports.dart';
 import 'package:is_takip_uyg/services/tasks/database_service_tasks.dart';
 import 'package:is_takip_uyg/services/users/database_service_users.dart';
 
-
 const oneDay = 60 * 60 * 24 * 1000;
 
 class UserHomePage extends StatefulWidget {
@@ -22,10 +23,10 @@ class UserHomePage extends StatefulWidget {
 }
 
 class _UserHomePageState extends State<UserHomePage> {
-  Task task ;
+  Task task;
+
   AuthService auth = new AuthService();
   DatabaseServiceUsers databaseServiceUsers = new DatabaseServiceUsers();
-  DatabaseServiceTask databaseServiceTask = new DatabaseServiceTask();
   DatabaseServiceReports databaseServiceReports = new DatabaseServiceReports();
   bool isActive = true;
   Report report;
@@ -36,27 +37,27 @@ class _UserHomePageState extends State<UserHomePage> {
   void initState() {
     super.initState();
     databaseServiceUsers.getUsernameByCurrentUser().then((value) => {
-      this.setState(() {
-        this.username = value;
-      }),
-    });
+          this.setState(() {
+            this.username = value;
+          }),
+        });
     databaseServiceReports.getReportByCurrentUser().then((value) => {
-      for (var report in value.documents)
-        {
-          if ((DateTime.now().difference(DateTime.parse(
-              report['startTime'].toDate().toString())))
-              .inMilliseconds <=
-              oneDay)
+          for (var report in value.documents)
             {
-              if (report["status"] == "Başlatıldı")
+              if ((DateTime.now().difference(DateTime.parse(
+                          report['startTime'].toDate().toString())))
+                      .inMilliseconds <=
+                  oneDay)
                 {
-                  this.isStarted = true,
-                  this.report = new Report(),
-                  this.report.jsonToReport(report.data)
+                  if (report["status"] == "Başlatıldı")
+                    {
+                      this.isStarted = true,
+                      this.report = new Report(),
+                      this.report.jsonToReport(report.data)
+                    }
                 }
             }
-        }
-    });
+        });
   }
 
   @override
@@ -181,16 +182,12 @@ class _UserHomePageState extends State<UserHomePage> {
   }
 
   Future<void> finishReport(Report report) async {
-    FirebaseUser user = await auth.getCurrentUser();
-    report.reportName = report.reportName;
-    report.creater = user.uid;
-    report.firstLocation = report.firstLocation;
-    report.lastLocation = await getLocation();
-    report.startTime = report.startTime;
-    report.finishTime = Timestamp.now();
-    report.status = "Bitirildi";
-    report.info = report.info;
-    showCustomDialogReport(context, report);
+    Report existingReport =
+        await databaseServiceReports.getReportByID(report.reportID);
+    existingReport.lastLocation = await getLocation();
+    existingReport.finishTime = Timestamp.now();
+    existingReport.status = "Bitirildi";
+    showCustomDialogReport(context, existingReport);
     //await databaseServiceReports.saveReport(report);
   }
 }

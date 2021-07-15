@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'file:///D:/flutter_workspace/is_takip_uyg/lib/component/admin/admin_task_alert_dialog.dart';
+import 'package:is_takip_uyg/component/user/user_edit_task_alert_dialog.dart';
 import 'package:is_takip_uyg/services/users/database_service_users.dart';
+import 'admin/admin_task_alert_dialog.dart';
 
 class TaskCard extends StatefulWidget {
   dynamic task;
@@ -21,10 +22,10 @@ class _TaskCardState extends State<TaskCard> {
   void initState() {
     super.initState();
     databaseServiceUsers.getUsernameByCurrentUser().then((value) => {
-      this.setState(() {
-        this.username = value;
-      }),
-    });
+          this.setState(() {
+            this.username = value;
+          }),
+        });
   }
 
   @override
@@ -32,8 +33,13 @@ class _TaskCardState extends State<TaskCard> {
     return Column(
       children: [
         GestureDetector(
-          onTap: (){
-            showCustomDialogTask(context, widget.task.data);
+          onTap: () {
+            print(this.username);
+            if (this.username == "Yaren Adıgüzel") {
+              showCustomDialogTask(context, widget.task.data);
+            } else {
+              showCustomDialogUserTask(context, widget.task.data);
+            }
           },
           child: Container(
             padding: EdgeInsets.only(left: 7, right: 7),
@@ -43,8 +49,8 @@ class _TaskCardState extends State<TaskCard> {
               color: widget.task["taskStatus"] == "Beklemede"
                   ? Color(0xffa3605d)
                   : widget.task["taskStatus"] == "Bitirildi"
-                  ? Colors.green
-                  : Color(0xbfeb9052),
+                      ? Colors.green
+                      : Color(0xbfeb9052),
               shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(12.0),
               ),
@@ -70,11 +76,12 @@ class _TaskCardState extends State<TaskCard> {
                                 child: Column(
                                   children: [
                                     Expanded(
-                                        flex: 1,
+                                        flex: 2,
                                         child: Text(
                                           "Görev Adı:",
                                           style: TextStyle(
-                                              color: Colors.white, fontSize: 13),
+                                              color: Colors.white,
+                                              fontSize: 13),
                                         )),
                                     Expanded(
                                         flex: 2,
@@ -102,7 +109,8 @@ class _TaskCardState extends State<TaskCard> {
                                         child: Text(
                                           "Görev Tipi:",
                                           style: TextStyle(
-                                              color: Colors.white, fontSize: 13),
+                                              color: Colors.white,
+                                              fontSize: 13),
                                         )),
                                     Expanded(
                                         flex: 2,
@@ -116,7 +124,8 @@ class _TaskCardState extends State<TaskCard> {
                                         child: Text(
                                           "Firma:",
                                           style: TextStyle(
-                                              color: Colors.white, fontSize: 13),
+                                              color: Colors.white,
+                                              fontSize: 13),
                                         )),
                                     Expanded(
                                         flex: 2,
@@ -151,7 +160,8 @@ class _TaskCardState extends State<TaskCard> {
                                         child: Text(
                                           "Oluşturma Tarihi:",
                                           style: TextStyle(
-                                              color: Colors.white, fontSize: 13),
+                                              color: Colors.white,
+                                              fontSize: 13),
                                         )),
                                     Expanded(
                                         flex: 2,
@@ -236,7 +246,9 @@ class _TaskCardState extends State<TaskCard> {
             ),
           ),
         ),
-        SizedBox(height: 15,),
+        SizedBox(
+          height: 15,
+        ),
       ],
     );
   }

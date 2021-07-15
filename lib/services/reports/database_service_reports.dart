@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:is_takip_uyg/models/Report.dart';
 import 'package:is_takip_uyg/services/auth_service.dart';
 
-
 class DatabaseServiceReports {
   final CollectionReference reportsRef =
       Firestore.instance.collection("reports");
@@ -38,6 +37,20 @@ class DatabaseServiceReports {
         .setData(report.toJson());
   }
 
+  getReportByID(String id) async {
+    FirebaseUser user = await authService.getCurrentUser();
+    Report report = new Report();
+    await reportsRef
+        .document(user.uid)
+        .collection("report")
+        .document(id)
+        .get()
+        .then((value) => {
+           report.jsonToReport(value.data)
+    });
+    return report;
+  }
+
   updateReportsData(Report report) async {
     await reportsRef
         .document(report.creater)
@@ -53,5 +66,4 @@ class DatabaseServiceReports {
         .document(report.reportID)
         .delete();
   }
-
 }

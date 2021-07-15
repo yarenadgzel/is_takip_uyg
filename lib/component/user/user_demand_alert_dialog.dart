@@ -5,7 +5,7 @@ import 'package:is_takip_uyg/user_pages/profile_page/user_demand_edit_page.dart'
 
 showCustomDialogUserDemand(BuildContext context, dynamic demand) async {
   DatabaseServiceUsers databaseServiceUsers = new DatabaseServiceUsers();
-  String username = await databaseServiceUsers.getUsernameByCurrentUser();
+  String username = await databaseServiceUsers.getUsernameByUserID(demand['createrID']);
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -16,7 +16,7 @@ showCustomDialogUserDemand(BuildContext context, dynamic demand) async {
           contentPadding: EdgeInsets.zero,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           elevation: 10,
           backgroundColor: Colors.transparent,
           content: Container(
@@ -45,7 +45,7 @@ showCustomDialogUserDemand(BuildContext context, dynamic demand) async {
                           children: [
                             Padding(
                               padding:
-                              const EdgeInsets.only(left: 120, right: 60),
+                                  const EdgeInsets.only(left: 120, right: 60),
                               child: Text(
                                 "Talep Bilgisi",
                                 style: TextStyle(
@@ -60,7 +60,13 @@ showCustomDialogUserDemand(BuildContext context, dynamic demand) async {
                                   size: 32,
                                 ),
                                 onPressed: () {
-                                  Navigator.push(context,MaterialPageRoute(builder:(context)=>UserDemandEditPage(demand)));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          UserDemandEditPage(demand),
+                                    ),
+                                  );
                                 }),
                           ],
                         )),
@@ -71,6 +77,10 @@ showCustomDialogUserDemand(BuildContext context, dynamic demand) async {
                     DemandAlertText(
                       headerText: "Oluşturan",
                       contentText: username,
+                    ),
+                    DemandAlertText(
+                      headerText: "Durum",
+                      contentText: demand["status"],
                     ),
                     DemandAlertText(
                       headerText: "Oluşturma Tarihi",

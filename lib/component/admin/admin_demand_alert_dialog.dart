@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:is_takip_uyg/component/feedback_alert_dialog.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
+import 'package:is_takip_uyg/models/Demand.dart';
+import 'package:is_takip_uyg/services/date_service.dart';
 import 'package:is_takip_uyg/services/demand/database_service_demand.dart';
 import 'package:is_takip_uyg/services/users/database_service_users.dart';
 
 showCustomDialogAdminDemand(BuildContext context, dynamic demand) async {
-  DatabaseServiceDemand databaseServiceDemand=new DatabaseServiceDemand();
+  DatabaseServiceDemand databaseServiceDemand = new DatabaseServiceDemand();
   DatabaseServiceUsers databaseServiceUsers = new DatabaseServiceUsers();
-  String username = await databaseServiceUsers.getUsernameByCurrentUser();
+  String username =
+      await databaseServiceUsers.getUsernameByUserID(demand['createrID']);
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -67,6 +70,10 @@ showCustomDialogAdminDemand(BuildContext context, dynamic demand) async {
                       contentText: username,
                     ),
                     DemandAlertText(
+                      headerText: "Durum",
+                      contentText: demand["status"],
+                    ),
+                    DemandAlertText(
                       headerText: "Oluşturma Tarihi",
                       contentText: demand["creationDate"],
                     ),
@@ -95,7 +102,6 @@ showCustomDialogAdminDemand(BuildContext context, dynamic demand) async {
                             color: Color(0xff2a51a1),
                             onPressed: () {
                               Navigator.pop(context);
-
                             },
                           ),
                           SizedBox(
@@ -105,6 +111,12 @@ showCustomDialogAdminDemand(BuildContext context, dynamic demand) async {
                               text: "Onayla",
                               color: Color(0xff02854b),
                               onPressed: () {
+                                demand['approvalDate'] = getCurrentTime();
+                                demand["status"] = "Onaylandı";
+                                Demand updatedDemand = new Demand();
+                                updatedDemand.jsonToDemand(demand);
+                                databaseServiceDemand
+                                    .updateDemand(updatedDemand);
                                 showFeedbackAlertDialog(context,
                                     "Talep başarılı bir şekilde onaylanmıştır..");
                               }),
@@ -115,6 +127,11 @@ showCustomDialogAdminDemand(BuildContext context, dynamic demand) async {
                             text: "Reddet",
                             color: Color(0xffea4646),
                             onPressed: () {
+                              demand['approvalDate'] = getCurrentTime();
+                              demand["status"] = "Reddedildi";
+                              Demand updatedDemand = new Demand();
+                              updatedDemand.jsonToDemand(demand);
+                              databaseServiceDemand.updateDemand(updatedDemand);
                               showFeedbackAlertDialog(context,
                                   "Talep başarılı bir şekilde reddedilmiştir..");
                             },
@@ -122,7 +139,6 @@ showCustomDialogAdminDemand(BuildContext context, dynamic demand) async {
                         ],
                       ),
                     )
-
                   ],
                 ),
               )),

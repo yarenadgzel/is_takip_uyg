@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:is_takip_uyg/component/admin/admin_demand_alert_dialog.dart';
 import 'package:is_takip_uyg/models/Demand.dart';
@@ -11,7 +10,7 @@ class DemandCard extends StatefulWidget {
   final Color color;
   final person;
 
-  DemandCard({this.demand, this.icon, this.color,this.person}) ;
+  DemandCard({this.demand, this.icon, this.color, this.person});
 
   @override
   _DemandCardState createState() => _DemandCardState();
@@ -21,21 +20,26 @@ class _DemandCardState extends State<DemandCard> {
   DatabaseServiceUsers databaseServiceUsers = new DatabaseServiceUsers();
   String username = "";
   Demand report = new Demand();
+
   @override
   void initState() {
     super.initState();
-    databaseServiceUsers.getUsernameByCurrentUser().then((value) => {
-      this.setState(() {
-        this.username = value;
-      }),
-    });
+    databaseServiceUsers
+        .getUsernameByUserID(widget.demand['createrID'])
+        .then((value) => {
+              this.setState(() {
+                this.username = value;
+              }),
+            });
   }
+
   @override
   Widget build(BuildContext context) {
     return FlatButton(
       onPressed: () {
-        widget.person=="user" ?
-        showCustomDialogUserDemand(context, widget.demand): showCustomDialogAdminDemand(context, widget.demand);
+        widget.person == "user"
+            ? showCustomDialogUserDemand(context, widget.demand)
+            : showCustomDialogAdminDemand(context, widget.demand);
       },
       child: Column(
         children: [
@@ -66,7 +70,7 @@ class _DemandCardState extends State<DemandCard> {
                         child: Column(
                           children: [
                             Expanded(
-                                flex: 1,
+                                flex: 2,
                                 child: Text(
                                   "Talep Adı :",
                                   style: TextStyle(
@@ -86,7 +90,7 @@ class _DemandCardState extends State<DemandCard> {
                                         color: Colors.white, fontSize: 15))),
                             Expanded(
                               flex: 2,
-                              child: Text(username,
+                              child: Text(this.username,
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 18,
@@ -122,8 +126,7 @@ class _DemandCardState extends State<DemandCard> {
                                 )),
                             Expanded(
                                 flex: 2,
-                                child: Text(
-                                    widget.demand["startDate"],
+                                child: Text(widget.demand["startDate"],
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 18,

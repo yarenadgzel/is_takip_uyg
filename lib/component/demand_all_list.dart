@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'file:///D:/flutter_workspace/is_takip_uyg/lib/component/demand_card.dart';
+import 'package:is_takip_uyg/component/demand_card.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
-import 'package:is_takip_uyg/models/LoggedInUser.dart';
 import 'package:is_takip_uyg/services/demand/database_service_demand.dart';
-import 'package:provider/provider.dart';
 
 class DemandAllList extends StatelessWidget {
   DocumentSnapshot snapshot;
@@ -29,18 +27,18 @@ class DemandAllList extends StatelessWidget {
         .map(
           (doc) => doc["status"] == demandStatusWaitingApprove
               ? DemandCard(
-                  demand: doc, color: Color(0xbfeb9052), icon: Icons.update)
+                  demand: doc.data, color: Color(0xbfeb9052), icon: Icons.update)
               : doc["status"] == demandStatusReject
                   ? DemandCard(
-                      demand: doc,
+                      demand: doc.data,
                       color: Color(0xffa3605d),
                       icon: Icons.remove_circle,
                     )
                   : doc["status"] == demandStatusApprove
                       ? DemandCard(
-                          demand: doc,
+                          demand: doc.data,
                           color: Colors.green,
-                          icon: Icons.remove_circle,
+                          icon: Icons.check_circle,
                         )
                       : Container(),
         )

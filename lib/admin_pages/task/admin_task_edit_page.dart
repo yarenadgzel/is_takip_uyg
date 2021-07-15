@@ -89,29 +89,29 @@ class _AdminTaskEditPageState extends State<AdminTaskEditPage> {
                               color: Color(0xff39969E),
                             )),
                         Expanded(
-                            flex: 5,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 28),
-                              child: TextField(
-                                controller: taskNameController,
-                                onChanged: (value) {
-                                  setState(() {
-                                    widget.task['taskName'] = value;
-                                  });
-                                },
-                                style: TextStyle(color: Colors.black),
-                                decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.grey,
-                                    ),
+                          flex: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10, right: 28),
+                            child: TextField(
+                              controller: taskNameController,
+                              onChanged: (value) {
+                                setState(() {
+                                  widget.task['taskName'] = value;
+                                });
+                              },
+                              style: TextStyle(color: Colors.black),
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
                                   ),
-                                  hintStyle: TextStyle(color: Colors.black38),
-                                  hintText: "Görev Adı",
                                 ),
+                                hintStyle: TextStyle(color: Colors.black38),
+                                hintText: "Görev Adı",
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),

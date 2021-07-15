@@ -6,6 +6,7 @@ class Report {
   String reportID;
   String reportName;
   String creater;
+  String taskID;
   String firstLocation;
   String lastLocation;
   Timestamp startTime;
@@ -19,7 +20,7 @@ class Report {
 
   @override
   String toString() {
-    return 'Report{reportName: $reportName, creater: $creater, firstLocation: $firstLocation, lastLocation: $lastLocation, startTime: $startTime, finishTime: $finishTime, status: $status, info: $info}';
+    return 'Report{reportName: $reportName, creater: $creater, taskID: $taskID, firstLocation: $firstLocation, lastLocation: $lastLocation, startTime: $startTime, finishTime: $finishTime, status: $status, info: $info}';
   }
 
   Map<String, dynamic> toJson() {
@@ -27,6 +28,7 @@ class Report {
       'reportID': reportID,
       'reportName': reportName,
       'creater': creater,
+      'taskID': taskID,
       'firstLocation': firstLocation,
       'lastLocation': lastLocation,
       'startTime': startTime,
@@ -40,6 +42,7 @@ class Report {
     this.reportID = report["reportID"];
     this.reportName = report["reportName"];
     this.creater = report["creater"];
+    this.taskID = report["taskID"];
     this.firstLocation = report["firstLocation"];
     this.lastLocation = report["lastLocation"];
     this.startTime = report["startTime"];

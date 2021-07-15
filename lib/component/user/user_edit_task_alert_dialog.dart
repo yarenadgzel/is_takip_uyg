@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:is_takip_uyg/admin_pages/task/admin_task_edit_page.dart';
+import 'package:is_takip_uyg/component/feedback_alert_dialog.dart';
 import 'package:is_takip_uyg/constant/constant.dart';
+import 'package:is_takip_uyg/models/Task.dart';
+import 'package:is_takip_uyg/services/date_service.dart';
+import 'package:is_takip_uyg/services/tasks/database_service_tasks.dart';
 import 'package:is_takip_uyg/services/users/database_service_users.dart';
 
-showCustomDialogTask(BuildContext context, dynamic task) async {
+showCustomDialogUserTask(BuildContext context, dynamic task) async {
   DatabaseServiceUsers databaseServiceUsers = new DatabaseServiceUsers();
+  DatabaseServiceTask databaseServiceTask = new DatabaseServiceTask();
   String username = await databaseServiceUsers.getUsernameByCurrentUser();
   showDialog(
     context: context,
@@ -40,35 +44,14 @@ showCustomDialogTask(BuildContext context, dynamic task) async {
                           borderRadius: BorderRadius.circular(16),
                           color: Color(0xff455a64),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 120, right: 60),
-                              child: Text(
-                                "Görev Bilgisi",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            IconButton(
-                                icon: Icon(
-                                  Icons.edit,
-                                  size: 32,
-                                ),
-                                onPressed: () {
-                                  print("editPage");
-                                  print("param: ${task}");
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              AdminTaskEditPage(task)));
-                                }),
-                          ],
+                        child: Center(
+                          child: Text(
+                            "Görev Bilgisi",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w500),
+                          ),
                         )),
                     TaskAlertText(
                       headerText: "Görev Adı",
@@ -98,10 +81,6 @@ showCustomDialogTask(BuildContext context, dynamic task) async {
                       contentText: task["taskStatus"],
                     ),
                     TaskAlertText(
-                      headerText: task["users"],
-                      contentText: task["taskStatus"],
-                    ),
-                    TaskAlertText(
                       headerText: "Oluşturma Tarihi",
                       contentText: task["creationDate"],
                     ),
@@ -119,26 +98,57 @@ showCustomDialogTask(BuildContext context, dynamic task) async {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Center(
-                        child: Container(
-                          width: 350,
-                          height: 40,
-                          child: RaisedButton(
-                            color: Color(0xff2a51a1),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "Kapat",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: RaisedButton(
+                              color: Color(0xff2a51a1),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "Kapat",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)),
                             ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(10.0)),
                           ),
-                        ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: RaisedButton(
+                              color: Colors.green,
+                              onPressed: () {
+                                task["taskStatus"] = "Bitirildi";
+                                task["finishDate"] = getCurrentTime();
+                                Task updatedTask = new Task();
+                                updatedTask.jsonToTask(task);
+                                databaseServiceTask.updateTask(updatedTask);
+                                showFeedbackAlertDialog(context,
+                                "Görev başarılı bir şekilde bitirilmiştir.");
+                              },
+                              child: Text(
+                                "Bitir",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)),
+                            ),
+                          ),
+                        ],
                       ),
                     )
                   ],

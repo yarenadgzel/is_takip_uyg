@@ -13,6 +13,7 @@ class ReportListByDate extends StatelessWidget {
   final CollectionReference reportsRef =
       Firestore.instance.collection("reports");
 
+
   @override
   Widget build(BuildContext context) {
     final loggedInUser = Provider.of<LoggedInUser>(context);
